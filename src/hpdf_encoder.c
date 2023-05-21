@@ -2218,7 +2218,7 @@ HPDF_BasicEncoder_New  (HPDF_MMgr        mmgr,
 
     data = HPDF_BasicEncoder_FindBuiltinData (encoding_name);
     if (!data->encoding_name) {
-        HPDF_SetError (mmgr->error, HPDF_INVALID_ENCODING_NAME, 0);
+		SET_ERROR(mmgr->error, HPDF_INVALID_ENCODING_NAME, 0);
         return NULL;
     }
 
@@ -2354,7 +2354,7 @@ HPDF_BasicEncoder_OverrideMap  (HPDF_Encoder        encoder,
     HPDF_PTRACE ((" HPDF_BasicEncoder_OverrideMap\n"));
 
     if (data->has_differences)
-        return HPDF_SetError (encoder->error, HPDF_INVALID_OPERATION, 0);
+		return SET_ERROR(encoder->error, HPDF_INVALID_OPERATION, 0);
 
     dst = data->unicode_map + HPDF_BASIC_ENCODER_FIRST_CHAR;
     flgs = data->differences + HPDF_BASIC_ENCODER_FIRST_CHAR;
@@ -2883,8 +2883,7 @@ HPDF_CMapEncoder_AddJWWLineHead  (HPDF_Encoder        encoder,
             }
 
             if (j == HPDF_MAX_JWW_NUM - 1)
-                return HPDF_SetError (encoder->error,
-                                HPDF_EXCEED_JWW_CODE_NUM_LIMIT, i);
+				return SET_ERROR(encoder->error, HPDF_EXCEED_JWW_CODE_NUM_LIMIT, i);
         }
 
         code++;

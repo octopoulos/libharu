@@ -201,7 +201,7 @@ HPDF_Dict_Write  (HPDF_Dict     dict,
         HPDF_Obj_Header *header = (HPDF_Obj_Header *)(element->value);
 
         if (!element->value)
-            return HPDF_SetError (dict->error, HPDF_INVALID_OBJECT, 0);
+			return SET_ERROR(dict->error, HPDF_INVALID_OBJECT, 0);
 
         if  (header->obj_id & HPDF_OTYPE_HIDDEN) {
             HPDF_PTRACE((" HPDF_Dict_Write obj=%p skipped obj_id=0x%08X\n",
@@ -238,17 +238,15 @@ HPDF_Dict_Write  (HPDF_Dict     dict,
         HPDF_Number length;
 
         /* get "length" element */
-        length = (HPDF_Number)HPDF_Dict_GetItem (dict, "Length",
-                HPDF_OCLASS_NUMBER);
+		length = (HPDF_Number)HPDF_Dict_GetItem(dict, "Length", HPDF_OCLASS_NUMBER);
         if (!length)
-            return HPDF_SetError (dict->error,
-                    HPDF_DICT_STREAM_LENGTH_NOT_FOUND, 0);
+			return SET_ERROR(dict->error, HPDF_DICT_STREAM_LENGTH_NOT_FOUND, 0);
 
         /* "length" element must be indirect-object */
-        if (!(length->header.obj_id & HPDF_OTYPE_INDIRECT)) {
-            return HPDF_SetError (dict->error, HPDF_DICT_ITEM_UNEXPECTED_TYPE,
-                    0);
-        }
+		if (!(length->header.obj_id & HPDF_OTYPE_INDIRECT))
+		{
+			return SET_ERROR(dict->error, HPDF_DICT_ITEM_UNEXPECTED_TYPE, 0);
+		}
 
         if ((ret = HPDF_Stream_WriteStr (stream, "\012stream\015\012")) /* Acrobat 8.15 requires both \r and \n here */
                 != HPDF_OK)
@@ -288,7 +286,7 @@ HPDF_Dict_Add  (HPDF_Dict        dict,
 
     if (!obj) {
         if (HPDF_Error_GetCode (dict->error) == HPDF_OK)
-            return HPDF_SetError (dict->error, HPDF_INVALID_OBJECT, 0);
+			return SET_ERROR(dict->error, HPDF_INVALID_OBJECT, 0);
         else
             return HPDF_INVALID_OBJECT;
     }
@@ -296,11 +294,11 @@ HPDF_Dict_Add  (HPDF_Dict        dict,
     header = (HPDF_Obj_Header *)obj;
 
     if (header->obj_id & HPDF_OTYPE_DIRECT)
-        return HPDF_SetError (dict->error, HPDF_INVALID_OBJECT, 0);
+		return SET_ERROR(dict->error, HPDF_INVALID_OBJECT, 0);
 
     if (!key) {
         HPDF_Obj_Free (dict->mmgr, obj);
-        return HPDF_SetError (dict->error, HPDF_INVALID_OBJECT, 0);
+		return SET_ERROR(dict->error, HPDF_INVALID_OBJECT, 0);
     }
 
     if (dict->list->count >= HPDF_LIMIT_MAX_DICT_ELEMENT) {
@@ -308,7 +306,7 @@ HPDF_Dict_Add  (HPDF_Dict        dict,
                     HPDF_LIMIT_MAX_DICT_ELEMENT));
 
         HPDF_Obj_Free (dict->mmgr, obj);
-        return HPDF_SetError (dict->error, HPDF_DICT_COUNT_ERR, 0);
+		return SET_ERROR(dict->error, HPDF_DICT_COUNT_ERR, 0);
     }
 
     /* check whether there is an object which has same name */
@@ -434,13 +432,13 @@ HPDF_Dict_GetItem  (HPDF_Dict        dict,
         } else
             obj = element->value;
 
-        if ((header->obj_class & HPDF_OCLASS_ANY) != obj_class) {
-            HPDF_PTRACE((" HPDF_Dict_GetItem dict=%p key=%s obj_class=0x%08X\n",
-                    dict, key, (HPDF_UINT)header->obj_class));
-            HPDF_SetError (dict->error, HPDF_DICT_ITEM_UNEXPECTED_TYPE, 0);
+        if ((header->obj_class & HPDF_OCLASS_ANY) != obj_class)
+		{
+			HPDF_PTRACE((" HPDF_Dict_GetItem dict=%p key=%s obj_class=0x%08X\n", dict, key, (HPDF_UINT)header->obj_class));
+			SET_ERROR(dict->error, HPDF_DICT_ITEM_UNEXPECTED_TYPE, 0);
 
-            return NULL;
-        }
+			return NULL;
+		}
 
         return obj;
     }

@@ -94,7 +94,7 @@ HPDF_MMgr_New  (HPDF_Error       error,
             HPDF_PTRACE(("+%p mmgr-node-new\n", node));
 
             if (node == NULL) {
-                HPDF_SetError (error, HPDF_FAILD_TO_ALLOC_MEM, HPDF_NOERROR);
+				SET_ERROR(error, HPDF_FAILD_TO_ALLOC_MEM, HPDF_NOERROR);
 
                 mmgr->free_fn(mmgr);
                 mmgr = NULL;
@@ -117,7 +117,7 @@ HPDF_MMgr_New  (HPDF_Error       error,
             mmgr->buf_size = buf_size;
         }
     } else
-        HPDF_SetError(error, HPDF_FAILD_TO_ALLOC_MEM, HPDF_NOERROR);
+		SET_ERROR(error, HPDF_FAILD_TO_ALLOC_MEM, HPDF_NOERROR);
 
     return mmgr;
 }
@@ -187,8 +187,7 @@ HPDF_GetMem  (HPDF_MMgr  mmgr,
             HPDF_PTRACE(("+%p mmgr-new-node\n", node));
 
             if (!node) {
-                HPDF_SetError (mmgr->error, HPDF_FAILD_TO_ALLOC_MEM,
-                        HPDF_NOERROR);
+				SET_ERROR(mmgr->error, HPDF_FAILD_TO_ALLOC_MEM, HPDF_NOERROR);
                 return NULL;
             }
 
@@ -205,7 +204,7 @@ HPDF_GetMem  (HPDF_MMgr  mmgr,
         HPDF_PTRACE(("+%p mmgr-alloc_fn size=%u\n", ptr, size));
 
         if (ptr == NULL)
-            HPDF_SetError (mmgr->error, HPDF_FAILD_TO_ALLOC_MEM, HPDF_NOERROR);
+			SET_ERROR(mmgr->error, HPDF_FAILD_TO_ALLOC_MEM, HPDF_NOERROR);
     }
 
 #ifdef HPDF_MEM_DEBUG

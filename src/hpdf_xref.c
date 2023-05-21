@@ -128,19 +128,18 @@ HPDF_Xref_Add  (HPDF_Xref  xref,
 
     if (!obj) {
         if (HPDF_Error_GetCode (xref->error) == HPDF_OK)
-            return HPDF_SetError (xref->error, HPDF_INVALID_OBJECT, 0);
+			return SET_ERROR(xref->error, HPDF_INVALID_OBJECT, 0);
         else
             return HPDF_INVALID_OBJECT;
     }
 
     header = (HPDF_Obj_Header *)obj;
 
-    if (header->obj_id & HPDF_OTYPE_DIRECT ||
-            header->obj_id & HPDF_OTYPE_INDIRECT)
-        return HPDF_SetError(xref->error, HPDF_INVALID_OBJECT, 0);
+    if (header->obj_id & HPDF_OTYPE_DIRECT || header->obj_id & HPDF_OTYPE_INDIRECT)
+		return SET_ERROR(xref->error, HPDF_INVALID_OBJECT, 0);
 
     if (xref->entries->count >= HPDF_LIMIT_MAX_XREF_ELEMENT) {
-        HPDF_SetError(xref->error, HPDF_XREF_COUNT_ERR, 0);
+		SET_ERROR(xref->error, HPDF_XREF_COUNT_ERR, 0);
         goto Fail;
     }
 
@@ -196,7 +195,7 @@ HPDF_Xref_GetEntryByObjectId  (HPDF_Xref  xref,
         HPDF_UINT i;
 
         if (tmp_xref->entries->count + tmp_xref->start_offset > obj_id) {
-            HPDF_SetError (xref->error, HPDF_INVALID_OBJ_ID, 0);
+			SET_ERROR(xref->error, HPDF_INVALID_OBJ_ID, 0);
             return NULL;
         }
 

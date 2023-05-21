@@ -26,7 +26,7 @@ HPDF_GState_New  (HPDF_MMgr    mmgr,
     HPDF_GState  gstate;
 
     if (current && current->depth >= HPDF_LIMIT_MAX_GSTATE) {
-        HPDF_SetError (mmgr->error, HPDF_EXCEED_GSTATE_LIMIT, 0);
+		SET_ERROR(mmgr->error, HPDF_EXCEED_GSTATE_LIMIT, 0);
 
         return NULL;
     }

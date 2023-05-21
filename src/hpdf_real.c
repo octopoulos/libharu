@@ -46,19 +46,17 @@ HPDF_Real_Write  (HPDF_Real    obj,
 
 
 HPDF_STATUS
-HPDF_Real_SetValue  (HPDF_Real  obj,
-                     HPDF_REAL  value)
+HPDF_Real_SetValue(HPDF_Real obj, HPDF_REAL value)
 {
-    HPDF_STATUS ret = HPDF_OK;
+	HPDF_STATUS ret = HPDF_OK;
 
-    if (value > HPDF_LIMIT_MAX_REAL)
-        return HPDF_SetError (obj->error, HPDF_REAL_OUT_OF_RANGE, 0);
+	if (value > HPDF_LIMIT_MAX_REAL)
+		return SET_ERROR(obj->error, HPDF_REAL_OUT_OF_RANGE, 0);
 
-    if (value < HPDF_LIMIT_MIN_REAL)
-        return HPDF_SetError (obj->error, HPDF_REAL_OUT_OF_RANGE, 0);
+	if (value < HPDF_LIMIT_MIN_REAL)
+		return SET_ERROR(obj->error, HPDF_REAL_OUT_OF_RANGE, 0);
 
-    obj->value =value;
+	obj->value = value;
 
-    return ret;
+	return ret;
 }
-

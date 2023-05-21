@@ -43,7 +43,7 @@ HPDF_Direct_SetValue  (HPDF_Direct  obj,
                        HPDF_UINT    len)
 {
     if (len > HPDF_LIMIT_MAX_STRING_LEN)
-        return HPDF_SetError (obj->error, HPDF_BINARY_LENGTH_ERR, 0);
+		return SET_ERROR(obj->error, HPDF_BINARY_LENGTH_ERR, 0);
 
     if (obj->value) {
         HPDF_FreeMem (obj->mmgr, obj->value);

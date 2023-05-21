@@ -123,7 +123,7 @@ HPDF_Stream_Read  (HPDF_Stream  stream,
                    HPDF_UINT    *size)
 {
     if (!(stream->read_fn))
-        return HPDF_SetError (stream->error, HPDF_INVALID_OPERATION, 0);
+		return SET_ERROR(stream->error, HPDF_INVALID_OPERATION, 0);
 
     /*
     if (HPDF_Error_GetCode(stream->error) != HPDF_NOERROR)
@@ -160,10 +160,10 @@ HPDF_Stream_ReadLn  (HPDF_Stream  stream,
         return HPDF_INVALID_PARAMETER;
 
     if (!s || *size == 0)
-        return HPDF_SetError (stream->error, HPDF_INVALID_PARAMETER, 0);
+		return SET_ERROR(stream->error, HPDF_INVALID_PARAMETER, 0);
 
     if (!(stream->seek_fn) || !(stream->read_fn))
-        return HPDF_SetError (stream->error, HPDF_INVALID_OPERATION, 0);
+		return SET_ERROR(stream->error, HPDF_INVALID_OPERATION, 0);
 
     if (r_size < HPDF_STREAM_BUF_SIZ)
         read_size = r_size;
@@ -240,7 +240,7 @@ HPDF_Stream_Write  (HPDF_Stream      stream,
     HPDF_PTRACE((" HPDF_Stream_Write\n"));
 
     if (!(stream->write_fn))
-        return HPDF_SetError(stream->error, HPDF_INVALID_OPERATION, 0);
+		return SET_ERROR(stream->error, HPDF_INVALID_OPERATION, 0);
 
     /*
     if (HPDF_Error_GetCode(stream->error) != HPDF_NOERROR)
@@ -333,7 +333,7 @@ HPDF_Stream_Seek  (HPDF_Stream      stream,
     HPDF_PTRACE((" HPDF_Stream_Seek\n"));
 
     if (!(stream->seek_fn))
-        return HPDF_SetError (stream->error, HPDF_INVALID_OPERATION, 0);
+		return SET_ERROR(stream->error, HPDF_INVALID_OPERATION, 0);
 
     if (HPDF_Error_GetCode(stream->error) != 0)
         return HPDF_THIS_FUNC_WAS_SKIPPED;
@@ -348,7 +348,7 @@ HPDF_Stream_Tell  (HPDF_Stream  stream)
     HPDF_PTRACE((" HPDF_Stream_Tell\n"));
 
     if (!(stream->tell_fn))
-        return HPDF_SetError (stream->error, HPDF_INVALID_OPERATION, 0);
+		return SET_ERROR(stream->error, HPDF_INVALID_OPERATION, 0);
 
     if (HPDF_Error_GetCode(stream->error) != 0)
         return HPDF_THIS_FUNC_WAS_SKIPPED;
@@ -366,7 +366,7 @@ HPDF_Stream_Size  (HPDF_Stream  stream)
         return stream->size;
 
     if (!(stream->size_fn)) {
-        HPDF_SetError (stream->error, HPDF_INVALID_OPERATION, 0);
+		SET_ERROR(stream->error, HPDF_INVALID_OPERATION, 0);
         return 0;
     }
 
@@ -589,7 +589,7 @@ HPDF_Stream_WriteToStreamWithDeflate  (HPDF_Stream  src,
     ret = deflateInit_(&strm, Z_DEFAULT_COMPRESSION, ZLIB_VERSION,
             sizeof(z_stream));
     if (ret != Z_OK)
-        return HPDF_SetError (src->error, HPDF_ZLIB_ERROR, ret);
+		return SET_ERROR(src->error, HPDF_ZLIB_ERROR, ret);
 
     strm.next_in = inbuf;
     strm.avail_in = 0;
@@ -618,7 +618,7 @@ HPDF_Stream_WriteToStreamWithDeflate  (HPDF_Stream  src,
             ret = deflate(&strm, Z_NO_FLUSH);
             if (ret != Z_OK && ret != Z_STREAM_END) {
                 deflateEnd(&strm);
-                return HPDF_SetError (src->error, HPDF_ZLIB_ERROR, ret);
+				return SET_ERROR(src->error, HPDF_ZLIB_ERROR, ret);
             }
 
             if (strm.avail_out == 0) {
@@ -630,7 +630,7 @@ HPDF_Stream_WriteToStreamWithDeflate  (HPDF_Stream  src,
 
                 if (ret != HPDF_OK) {
                     deflateEnd(&strm);
-                    return HPDF_SetError (src->error, HPDF_ZLIB_ERROR, ret);
+					return SET_ERROR(src->error, HPDF_ZLIB_ERROR, ret);
                 }
 
                 strm.next_out = otbuf;
@@ -647,7 +647,7 @@ HPDF_Stream_WriteToStreamWithDeflate  (HPDF_Stream  src,
         ret = deflate(&strm, Z_FINISH);
         if (ret != Z_OK && ret != Z_STREAM_END) {
             deflateEnd(&strm);
-            return HPDF_SetError (src->error, HPDF_ZLIB_ERROR, ret);
+			return SET_ERROR(src->error, HPDF_ZLIB_ERROR, ret);
         }
 
         if (ret == Z_STREAM_END)
@@ -663,7 +663,7 @@ HPDF_Stream_WriteToStreamWithDeflate  (HPDF_Stream  src,
 
             if (ret != HPDF_OK) {
                 deflateEnd(&strm);
-                return HPDF_SetError (src->error, HPDF_ZLIB_ERROR, ret);
+				return SET_ERROR(src->error, HPDF_ZLIB_ERROR, ret);
             }
 
             strm.next_out = otbuf;
@@ -699,13 +699,12 @@ HPDF_Stream_WriteToStream  (HPDF_Stream  src,
     HPDF_UNUSED (filter);
 
     if (!dst || !(dst->write_fn)) {
-        HPDF_SetError (src->error, HPDF_INVALID_OBJECT, 0);
+		SET_ERROR(src->error, HPDF_INVALID_OBJECT, 0);
         return HPDF_INVALID_OBJECT;
     }
 
-    if (HPDF_Error_GetCode (src->error) != HPDF_NOERROR ||
-            HPDF_Error_GetCode (dst->error) != HPDF_NOERROR)
-        return HPDF_THIS_FUNC_WAS_SKIPPED;
+    if (HPDF_Error_GetCode(src->error) != HPDF_NOERROR || HPDF_Error_GetCode(dst->error) != HPDF_NOERROR)
+		return HPDF_THIS_FUNC_WAS_SKIPPED;
 
     /* initialize input stream */
     if (HPDF_Stream_Size (src) == 0)
@@ -764,9 +763,9 @@ HPDF_FileReader_New  (HPDF_MMgr   mmgr,
 
     if (!fp) {
 #ifdef UNDER_CE
-        HPDF_SetError (mmgr->error, HPDF_FILE_OPEN_ERROR, GetLastError());
+		SET_ERROR(mmgr->error, HPDF_FILE_OPEN_ERROR, GetLastError());
 #else
-        HPDF_SetError (mmgr->error, HPDF_FILE_OPEN_ERROR, errno);
+		SET_ERROR(mmgr->error, HPDF_FILE_OPEN_ERROR, errno);
 #endif
         return NULL;
     }
@@ -818,7 +817,7 @@ HPDF_FileReader_ReadFunc  (HPDF_Stream  stream,
             return HPDF_STREAM_EOF;
         }
 
-        return HPDF_SetError (stream->error, HPDF_FILE_IO_ERROR, HPDF_FERROR(fp));
+        return SET_ERROR(stream->error, HPDF_FILE_IO_ERROR, HPDF_FERROR(fp));
     }
 
     return HPDF_OK;
@@ -864,7 +863,7 @@ HPDF_FileReader_SeekFunc  (HPDF_Stream     stream,
     }
 
     if (HPDF_FSEEK (fp, pos, whence) != 0) {
-        return HPDF_SetError (stream->error, HPDF_FILE_IO_ERROR, HPDF_FERROR(fp));
+		return SET_ERROR(stream->error, HPDF_FILE_IO_ERROR, HPDF_FERROR(fp));
     }
 
     return HPDF_OK;
@@ -880,8 +879,7 @@ HPDF_FileStream_TellFunc  (HPDF_Stream   stream)
     HPDF_PTRACE((" HPDF_FileReader_TellFunc\n"));
 
     if ((ret = HPDF_FTELL (fp)) < 0) {
-        return HPDF_SetError (stream->error, HPDF_FILE_IO_ERROR,
-                HPDF_FERROR(fp));
+		return SET_ERROR(stream->error, HPDF_FILE_IO_ERROR, HPDF_FERROR(fp));
     }
 
     return ret;
@@ -899,29 +897,25 @@ HPDF_FileStream_SizeFunc  (HPDF_Stream   stream)
 
     /* save current file-pointer */
     if ((ptr = HPDF_FTELL (fp)) < 0) {
-        HPDF_SetError (stream->error, HPDF_FILE_IO_ERROR,
-                HPDF_FERROR(fp));
+		SET_ERROR(stream->error, HPDF_FILE_IO_ERROR, HPDF_FERROR(fp));
         return 0;
     }
 
     /* move file-pointer to the end of the file */
     if (HPDF_FSEEK (fp, 0, SEEK_END) < 0) {
-        HPDF_SetError (stream->error, HPDF_FILE_IO_ERROR,
-                HPDF_FERROR(fp));
+		SET_ERROR(stream->error, HPDF_FILE_IO_ERROR, HPDF_FERROR(fp));
         return 0;
     }
 
     /* get the pointer of the end of the file */
     if ((size = HPDF_FTELL (fp)) < 0) {
-        HPDF_SetError (stream->error, HPDF_FILE_IO_ERROR,
-                HPDF_FERROR(fp));
+		SET_ERROR(stream->error, HPDF_FILE_IO_ERROR, HPDF_FERROR(fp));
         return 0;
     }
 
     /* restore current file-pointer */
     if (HPDF_FSEEK (fp, ptr, SEEK_SET) < 0) {
-        HPDF_SetError (stream->error, HPDF_FILE_IO_ERROR,
-                HPDF_FERROR(fp));
+		SET_ERROR(stream->error, HPDF_FILE_IO_ERROR, HPDF_FERROR(fp));
         return 0;
     }
 
@@ -940,9 +934,9 @@ HPDF_FileWriter_New  (HPDF_MMgr        mmgr,
 
     if (!fp) {
 #ifdef UNDER_CE
-        HPDF_SetError (mmgr->error, HPDF_FILE_OPEN_ERROR, GetLastError());
+		SET_ERROR(mmgr->error, HPDF_FILE_OPEN_ERROR, GetLastError());
 #else
-        HPDF_SetError (mmgr->error, HPDF_FILE_OPEN_ERROR, errno);
+		SET_ERROR(mmgr->error, HPDF_FILE_OPEN_ERROR, errno);
 #endif
         return NULL;
     }
@@ -978,7 +972,7 @@ HPDF_FileWriter_WriteFunc  (HPDF_Stream      stream,
     ret = HPDF_FWRITE (ptr, 1, siz, fp);
 
     if (ret != siz) {
-        return HPDF_SetError (stream->error, HPDF_FILE_IO_ERROR, HPDF_FERROR(fp));
+		return SET_ERROR(stream->error, HPDF_FILE_IO_ERROR, HPDF_FERROR(fp));
     }
 
     return HPDF_OK;
@@ -1102,7 +1096,7 @@ HPDF_MemStream_SeekFunc  (HPDF_Stream      stream,
         pos = stream->size - pos;
 
     if (pos > (HPDF_INT)stream->size) {
-        return HPDF_SetError (stream->error, HPDF_STREAM_EOF, 0);
+		return SET_ERROR(stream->error, HPDF_STREAM_EOF, 0);
     }
 
     if (stream->size == 0) {
@@ -1113,7 +1107,7 @@ HPDF_MemStream_SeekFunc  (HPDF_Stream      stream,
     attr->r_pos = pos % attr->buf_siz;
     attr->r_ptr = (HPDF_BYTE*)HPDF_List_ItemAt (attr->buf, attr->r_ptr_idx);
     if (attr->r_ptr == NULL) {
-        HPDF_SetError (stream->error, HPDF_INVALID_OBJECT, 0);
+		SET_ERROR(stream->error, HPDF_INVALID_OBJECT, 0);
         return HPDF_INVALID_OBJECT;
     } else
         attr->r_ptr += attr->r_pos;
@@ -1133,7 +1127,7 @@ HPDF_MemStream_GetBufPtr  (HPDF_Stream  stream,
     HPDF_PTRACE((" HPDF_MemStream_GetBufPtr\n"));
 
     if (stream->type != HPDF_STREAM_MEMORY) {
-        HPDF_SetError (stream->error, HPDF_INVALID_OBJECT, 0);
+		SET_ERROR(stream->error, HPDF_INVALID_OBJECT, 0);
         return NULL;
     }
 
@@ -1141,7 +1135,7 @@ HPDF_MemStream_GetBufPtr  (HPDF_Stream  stream,
 
     ret = (HPDF_BYTE *)HPDF_List_ItemAt (attr->buf, index);
     if (ret == NULL) {
-        HPDF_SetError (stream->error, HPDF_INVALID_PARAMETER, 0);
+		SET_ERROR(stream->error, HPDF_INVALID_PARAMETER, 0);
         *length = 0;
         return NULL;
     }

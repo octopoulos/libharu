@@ -196,11 +196,10 @@ HPDF_EncryptDict_SetPassword  (HPDF_EncryptDict  dict,
     HPDF_PTRACE((" HPDF_EncryptDict_SetPassword\n"));
 
     if (HPDF_StrLen(owner_passwd, 2) == 0)
-        return HPDF_SetError(dict->error, HPDF_ENCRYPT_INVALID_PASSWORD, 0);
+		return SET_ERROR(dict->error, HPDF_ENCRYPT_INVALID_PASSWORD, 0);
 
-    if (owner_passwd && user_passwd &&
-            HPDF_StrCmp (owner_passwd, user_passwd) == 0)
-        return HPDF_SetError(dict->error, HPDF_ENCRYPT_INVALID_PASSWORD, 0);
+    if (owner_passwd && user_passwd && HPDF_StrCmp(owner_passwd, user_passwd) == 0)
+		return SET_ERROR(dict->error, HPDF_ENCRYPT_INVALID_PASSWORD, 0);
 
     HPDF_PadOrTrancatePasswd (owner_passwd, attr->owner_passwd);
     HPDF_PadOrTrancatePasswd (user_passwd, attr->user_passwd);
