@@ -156,11 +156,14 @@ extern "C" {
 
 typedef struct  _HPDF_Error_Rec  *HPDF_Error;
 
-typedef struct  _HPDF_Error_Rec {
-    HPDF_STATUS             error_no;
-    HPDF_STATUS             detail_no;
-    HPDF_Error_Handler      error_fn;
-    void                    *user_data;
+typedef struct _HPDF_Error_Rec
+{
+	HPDF_STATUS        error_no;
+	HPDF_STATUS        detail_no;
+	char               fileName[512];
+	int                lineNo;
+	HPDF_Error_Handler error_fn;
+	void*              user_data;
 } HPDF_Error_Rec;
 
 
@@ -188,15 +191,13 @@ HPDF_Error_GetDetailCode  (HPDF_Error  error);
 
 
 HPDF_STATUS
-HPDF_SetError  (HPDF_Error   error,
-                HPDF_STATUS  error_no,
-                HPDF_STATUS  detail_no);
-
+HPDF_SetError(HPDF_Error error, HPDF_STATUS error_no, HPDF_STATUS detail_no, const char* fileName, int lineNo);
 
 HPDF_STATUS
-HPDF_RaiseError  (HPDF_Error   error,
-                  HPDF_STATUS  error_no,
-                  HPDF_STATUS  detail_no);
+HPDF_RaiseError(HPDF_Error error, HPDF_STATUS error_no, HPDF_STATUS detail_no, const char* fileName, int lineNo);
+
+#define SET_ERROR(error, errorNo, detailNo)   HPDF_SetError(error, errorNo, detailNo, __FILE__, __LINE__)
+#define RAISE_ERROR(error, errorNo, detailNo) HPDF_RaiseError(error, errorNo, detailNo, __FILE__, __LINE__)
 
 #ifdef __cplusplus
 }

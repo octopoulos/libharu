@@ -187,7 +187,7 @@ HPDF_Array_Add  (HPDF_Array  array,
 
     if (!obj) {
         if (HPDF_Error_GetCode (array->error) == HPDF_OK)
-            return HPDF_SetError (array->error, HPDF_INVALID_OBJECT, 0);
+			return SET_ERROR(array->error, HPDF_INVALID_OBJECT, 0);
         else
             return HPDF_INVALID_OBJECT;
     }
@@ -195,14 +195,14 @@ HPDF_Array_Add  (HPDF_Array  array,
     header = (HPDF_Obj_Header *)obj;
 
     if (header->obj_id & HPDF_OTYPE_DIRECT)
-        return HPDF_SetError (array->error, HPDF_INVALID_OBJECT, 0);
+		return SET_ERROR(array->error, HPDF_INVALID_OBJECT, 0);
 
     if (array->list->count >= HPDF_LIMIT_MAX_ARRAY) {
         HPDF_PTRACE((" HPDF_Array_Add exceed limitatin of array count(%d)\n",
                     HPDF_LIMIT_MAX_ARRAY));
 
         HPDF_Obj_Free (array->mmgr, obj);
-        return HPDF_SetError (array->error, HPDF_ARRAY_COUNT_ERR, 0);
+		return SET_ERROR(array->error, HPDF_ARRAY_COUNT_ERR, 0);
     }
 
     if (header->obj_id & HPDF_OTYPE_INDIRECT) {
@@ -246,7 +246,7 @@ HPDF_Array_Insert  (HPDF_Array  array,
 
     if (!obj) {
         if (HPDF_Error_GetCode (array->error) == HPDF_OK)
-            return HPDF_SetError (array->error, HPDF_INVALID_OBJECT, 0);
+			return SET_ERROR(array->error, HPDF_INVALID_OBJECT, 0);
         else
             return HPDF_INVALID_OBJECT;
     }
@@ -257,7 +257,7 @@ HPDF_Array_Insert  (HPDF_Array  array,
         HPDF_PTRACE((" HPDF_Array_Add this object cannot owned by array "
                 "obj=0x%08X\n", (HPDF_UINT)array));
 
-        return HPDF_SetError (array->error, HPDF_INVALID_OBJECT, 0);
+        return SET_ERROR(array->error, HPDF_INVALID_OBJECT, 0);
     }
 
     if (array->list->count >= HPDF_LIMIT_MAX_ARRAY) {
@@ -266,7 +266,7 @@ HPDF_Array_Insert  (HPDF_Array  array,
 
         HPDF_Obj_Free (array->mmgr, obj);
 
-        return HPDF_SetError (array->error, HPDF_ARRAY_COUNT_ERR, 0);
+        return SET_ERROR(array->error, HPDF_ARRAY_COUNT_ERR, 0);
     }
 
     if (header->obj_id & HPDF_OTYPE_INDIRECT) {
@@ -323,7 +323,7 @@ HPDF_Array_GetItem  (HPDF_Array   array,
     obj = HPDF_List_ItemAt (array->list, index);
 
     if (!obj) {
-        HPDF_SetError (array->error, HPDF_ARRAY_ITEM_NOT_FOUND, 0);
+		SET_ERROR(array->error, HPDF_ARRAY_ITEM_NOT_FOUND, 0);
         return NULL;
     }
 
@@ -335,7 +335,7 @@ HPDF_Array_GetItem  (HPDF_Array   array,
     }
 
     if ((header->obj_class & HPDF_OCLASS_ANY) != obj_class) {
-        HPDF_SetError (array->error, HPDF_ARRAY_ITEM_UNEXPECTED_TYPE, 0);
+		SET_ERROR(array->error, HPDF_ARRAY_ITEM_UNEXPECTED_TYPE, 0);
 
         return NULL;
     }

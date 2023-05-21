@@ -181,10 +181,7 @@ typedef enum  _HPDF_EncryptMode {
 } HPDF_EncryptMode;
 
 
-typedef void
-(HPDF_STDCALL *HPDF_Error_Handler)  (HPDF_STATUS   error_no,
-                                     HPDF_STATUS   detail_no,
-                                     void         *user_data);
+typedef void(HPDF_STDCALL* HPDF_Error_Handler)(HPDF_STATUS error_no, HPDF_STATUS detail_no, const char* fileName, int lineNo, void* user_data);
 
 typedef void*
 (HPDF_STDCALL *HPDF_Alloc_Func)  (HPDF_UINT  size);

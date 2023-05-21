@@ -117,7 +117,7 @@ HPDF_HasDoc  (HPDF_Doc  pdf)
         return HPDF_FALSE;
 
     if (!pdf->catalog || pdf->error.error_no != HPDF_NOERROR) {
-        HPDF_RaiseError (&pdf->error, HPDF_INVALID_DOCUMENT, 0);
+		RAISE_ERROR(&pdf->error, HPDF_INVALID_DOCUMENT, 0);
         return HPDF_FALSE;
     } else
         return HPDF_TRUE;
@@ -362,10 +362,10 @@ HPDF_SetPagesConfiguration  (HPDF_Doc    pdf,
         return HPDF_INVALID_DOCUMENT;
 
     if (pdf->cur_page)
-        return HPDF_RaiseError (&pdf->error, HPDF_INVALID_DOCUMENT_STATE, 0);
+		return RAISE_ERROR(&pdf->error, HPDF_INVALID_DOCUMENT_STATE, 0);
 
     if (page_per_pages > HPDF_LIMIT_MAX_ARRAY)
-        return HPDF_RaiseError (&pdf->error, HPDF_INVALID_PARAMETER, 0);
+		return RAISE_ERROR(&pdf->error, HPDF_INVALID_PARAMETER, 0);
 
     if (pdf->cur_pages == pdf->root_pages) {
         pdf->cur_pages = HPDF_Doc_AddPagesTo (pdf, pdf->root_pages);
@@ -419,8 +419,7 @@ HPDF_Doc_SetEncryptOn  (HPDF_Doc   pdf)
         return HPDF_OK;
 
     if (!pdf->encrypt_dict)
-        return HPDF_SetError (&pdf->error, HPDF_DOC_ENCRYPTDICT_NOT_FOUND,
-                0);
+		return SET_ERROR(&pdf->error, HPDF_DOC_ENCRYPTDICT_NOT_FOUND, 0);
 
     if (pdf->encrypt_dict->header.obj_id == HPDF_OTYPE_NONE)
         if (HPDF_Xref_Add (pdf->xref, pdf->encrypt_dict) != HPDF_OK)
@@ -473,10 +472,9 @@ HPDF_SetPermission  (HPDF_Doc    pdf,
     e = HPDF_EncryptDict_GetAttr (pdf->encrypt_dict);
 
     if (!e)
-        return HPDF_RaiseError (&pdf->error,
-                HPDF_DOC_ENCRYPTDICT_NOT_FOUND, 0);
-    else
-        e->permission = permission;
+		return RAISE_ERROR(&pdf->error, HPDF_DOC_ENCRYPTDICT_NOT_FOUND, 0);
+	else
+		e->permission = permission;
 
     return HPDF_OK;
 }
@@ -497,9 +495,9 @@ HPDF_SetEncryptionMode  (HPDF_Doc           pdf,
     e = HPDF_EncryptDict_GetAttr (pdf->encrypt_dict);
 
     if (!e)
-        return HPDF_RaiseError (&pdf->error,
-                HPDF_DOC_ENCRYPTDICT_NOT_FOUND, 0);
-    else {
+		return RAISE_ERROR(&pdf->error, HPDF_DOC_ENCRYPTDICT_NOT_FOUND, 0);
+	else
+	{
         if (mode == HPDF_ENCRYPT_R2)
             e->key_len = 5;
         else {
@@ -513,9 +511,8 @@ HPDF_SetEncryptionMode  (HPDF_Doc           pdf,
                 e->key_len = key_len;
             else if (key_len == 0)
                 e->key_len = 16;
-            else
-                return HPDF_RaiseError (&pdf->error,
-                        HPDF_INVALID_ENCRYPT_KEY_LEN, 0);
+			else
+				return RAISE_ERROR(&pdf->error, HPDF_INVALID_ENCRYPT_KEY_LEN, 0);
         }
         e->mode = mode;
     }
@@ -548,10 +545,10 @@ HPDF_Doc_SetEncryptOff  (HPDF_Doc   pdf)
             entry = HPDF_Xref_GetEntryByObjectId (pdf->xref,
                         obj_id & 0x00FFFFFF);
 
-            if (!entry) {
-                return HPDF_SetError (&pdf->error,
-                        HPDF_DOC_ENCRYPTDICT_NOT_FOUND, 0);
-            }
+            if (!entry)
+			{
+				return SET_ERROR(&pdf->error, HPDF_DOC_ENCRYPTDICT_NOT_FOUND, 0);
+			}
 
             null_obj = HPDF_Null_New (pdf->mmgr);
             if (!null_obj)
@@ -652,7 +649,7 @@ HPDF_SaveToStream  (HPDF_Doc   pdf)
         pdf->stream = HPDF_MemStream_New (pdf->mmgr, HPDF_STREAM_BUF_SIZ);
 
     if (!HPDF_Stream_Validate (pdf->stream))
-        return HPDF_RaiseError (&pdf->error, HPDF_INVALID_STREAM, 0);
+		return RAISE_ERROR(&pdf->error, HPDF_INVALID_STREAM, 0);
 
     HPDF_MemStream_FreeData (pdf->stream);
 
@@ -723,10 +720,10 @@ HPDF_ReadFromStream  (HPDF_Doc       pdf,
         return HPDF_INVALID_DOCUMENT;
 
     if (!HPDF_Stream_Validate (pdf->stream))
-        return HPDF_RaiseError (&pdf->error, HPDF_INVALID_OPERATION, 0);
+		return RAISE_ERROR(&pdf->error, HPDF_INVALID_OPERATION, 0);
 
     if (*size == 0)
-        return HPDF_RaiseError (&pdf->error, HPDF_INVALID_PARAMETER, 0);
+		return RAISE_ERROR(&pdf->error, HPDF_INVALID_PARAMETER, 0);
 
     ret = HPDF_Stream_Read (pdf->stream, buf, &isize);
 
@@ -746,7 +743,7 @@ HPDF_ResetStream  (HPDF_Doc     pdf)
         return HPDF_INVALID_DOCUMENT;
 
     if (!HPDF_Stream_Validate (pdf->stream))
-        return HPDF_RaiseError (&pdf->error, HPDF_INVALID_OPERATION, 0);
+		return RAISE_ERROR(&pdf->error, HPDF_INVALID_OPERATION, 0);
 
     return HPDF_Stream_Seek (pdf->stream, 0, HPDF_SEEK_SET);
 }
@@ -800,7 +797,7 @@ HPDF_GetPageByIndex  (HPDF_Doc    pdf,
 
     ret = HPDF_List_ItemAt (pdf->page_list, index);
     if (!ret) {
-        HPDF_RaiseError (&pdf->error, HPDF_INVALID_PAGE_INDEX, 0);
+		RAISE_ERROR(&pdf->error, HPDF_INVALID_PAGE_INDEX, 0);
         return NULL;
     }
 
@@ -830,11 +827,11 @@ HPDF_Doc_SetCurrentPages  (HPDF_Doc     pdf,
         return HPDF_INVALID_DOCUMENT;
 
     if (!HPDF_Pages_Validate (pages))
-        return HPDF_SetError (&pdf->error, HPDF_INVALID_PAGES, 0);
+		return SET_ERROR(&pdf->error, HPDF_INVALID_PAGES, 0);
 
     /* check whether the pages belong to the pdf */
     if (pdf->mmgr != pages->mmgr)
-        return HPDF_SetError (&pdf->error, HPDF_INVALID_PAGES, 0);
+		return SET_ERROR(&pdf->error, HPDF_INVALID_PAGES, 0);
 
     pdf->cur_pages = pages;
 
@@ -852,11 +849,11 @@ HPDF_Doc_SetCurrentPage  (HPDF_Doc    pdf,
         return HPDF_INVALID_DOCUMENT;
 
     if (!HPDF_Page_Validate (page))
-        return HPDF_SetError (&pdf->error, HPDF_INVALID_PAGE, 0);
+		return SET_ERROR(&pdf->error, HPDF_INVALID_PAGE, 0);
 
     /* check whether the page belong to the pdf */
     if (pdf->mmgr != page->mmgr)
-        return HPDF_SetError (&pdf->error, HPDF_INVALID_PAGE, 0);
+		return SET_ERROR(&pdf->error, HPDF_INVALID_PAGE, 0);
 
     pdf->cur_page = page;
 
@@ -891,12 +888,12 @@ HPDF_AddPage  (HPDF_Doc  pdf)
     }
 
     if ((ret = HPDF_Pages_AddKids (pdf->cur_pages, page)) != HPDF_OK) {
-        HPDF_RaiseError (&pdf->error, ret, 0);
+		RAISE_ERROR(&pdf->error, ret, 0);
         return NULL;
     }
 
     if ((ret = HPDF_List_Add (pdf->page_list, page)) != HPDF_OK) {
-        HPDF_RaiseError (&pdf->error, ret, 0);
+		RAISE_ERROR(&pdf->error, ret, 0);
         return NULL;
     }
 
@@ -923,13 +920,13 @@ HPDF_Doc_AddPagesTo  (HPDF_Doc     pdf,
         return NULL;
 
     if (!HPDF_Pages_Validate (parent)) {
-        HPDF_RaiseError (&pdf->error, HPDF_INVALID_PAGES, 0);
+		RAISE_ERROR(&pdf->error, HPDF_INVALID_PAGES, 0);
         return NULL;
     }
 
     /* check whether the page belong to the pdf */
     if (pdf->mmgr != parent->mmgr) {
-        HPDF_RaiseError (&pdf->error, HPDF_INVALID_PAGES, 0);
+		RAISE_ERROR(&pdf->error, HPDF_INVALID_PAGES, 0);
         return NULL;
     }
 
@@ -957,13 +954,13 @@ HPDF_InsertPage  (HPDF_Doc    pdf,
         return NULL;
 
     if (!HPDF_Page_Validate (target)) {
-        HPDF_RaiseError (&pdf->error, HPDF_INVALID_PAGE, 0);
+		RAISE_ERROR(&pdf->error, HPDF_INVALID_PAGE, 0);
         return NULL;
     }
 
     /* check whether the page belong to the pdf */
     if (pdf->mmgr != target->mmgr) {
-        HPDF_RaiseError (&pdf->error, HPDF_INVALID_PAGE, 0);
+		RAISE_ERROR(&pdf->error, HPDF_INVALID_PAGE, 0);
         return NULL;
     }
 
@@ -974,12 +971,12 @@ HPDF_InsertPage  (HPDF_Doc    pdf,
     }
 
     if ((ret = HPDF_Page_InsertBefore (page, target)) != HPDF_OK) {
-        HPDF_RaiseError (&pdf->error, ret, 0);
+		RAISE_ERROR(&pdf->error, ret, 0);
         return NULL;
     }
 
     if ((ret = HPDF_List_Insert (pdf->page_list, target, page)) != HPDF_OK) {
-        HPDF_RaiseError (&pdf->error, ret, 0);
+		RAISE_ERROR(&pdf->error, ret, 0);
         return NULL;
     }
 
@@ -1077,16 +1074,16 @@ HPDF_Doc_RegisterFontDef  (HPDF_Doc       pdf,
     HPDF_PTRACE ((" HPDF_Doc_RegisterFontDef\n"));
 
     if (!fontdef)
-        return HPDF_SetError (&pdf->error, HPDF_INVALID_OBJECT, 0);
+		return SET_ERROR(&pdf->error, HPDF_INVALID_OBJECT, 0);
 
     if (HPDF_Doc_FindFontDef (pdf, fontdef->base_font) != NULL) {
         HPDF_FontDef_Free (fontdef);
-        return HPDF_SetError (&pdf->error, HPDF_DUPLICATE_REGISTRATION, 0);
+		return SET_ERROR(&pdf->error, HPDF_DUPLICATE_REGISTRATION, 0);
     }
 
     if ((ret = HPDF_List_Add (pdf->fontdef_list, fontdef)) != HPDF_OK) {
         HPDF_FontDef_Free (fontdef);
-        return HPDF_SetError (&pdf->error, ret, 0);
+		return SET_ERROR(&pdf->error, ret, 0);
     }
 
     return HPDF_OK;
@@ -1116,7 +1113,7 @@ HPDF_GetFontDef  (HPDF_Doc          pdf,
 
         if ((ret = HPDF_List_Add (pdf->fontdef_list, def)) != HPDF_OK) {
             HPDF_FontDef_Free (def);
-            HPDF_RaiseError (&pdf->error, ret, 0);
+			RAISE_ERROR(&pdf->error, ret, 0);
             def = NULL;
         }
     }
@@ -1165,16 +1162,16 @@ HPDF_Doc_RegisterEncoder  (HPDF_Doc       pdf,
     HPDF_STATUS ret;
 
     if (!encoder)
-        return HPDF_SetError (&pdf->error, HPDF_INVALID_OBJECT, 0);
+		return SET_ERROR(&pdf->error, HPDF_INVALID_OBJECT, 0);
 
     if (HPDF_Doc_FindEncoder (pdf, encoder->name) != NULL) {
         HPDF_Encoder_Free (encoder);
-        return HPDF_SetError (&pdf->error, HPDF_DUPLICATE_REGISTRATION, 0);
+		return SET_ERROR(&pdf->error, HPDF_DUPLICATE_REGISTRATION, 0);
     }
 
     if ((ret = HPDF_List_Add (pdf->encoder_list, encoder)) != HPDF_OK) {
         HPDF_Encoder_Free (encoder);
-        return HPDF_SetError (&pdf->error, ret, 0);
+		return SET_ERROR(&pdf->error, ret, 0);
     }
 
     return HPDF_OK;
@@ -1205,7 +1202,7 @@ HPDF_GetEncoder  (HPDF_Doc         pdf,
 
         if ((ret = HPDF_List_Add (pdf->encoder_list, encoder)) != HPDF_OK) {
             HPDF_Encoder_Free (encoder);
-            HPDF_RaiseError (&pdf->error, ret, 0);
+			RAISE_ERROR(&pdf->error, ret, 0);
             return NULL;
         }
     }
@@ -1307,7 +1304,7 @@ HPDF_GetFont  (HPDF_Doc          pdf,
         return NULL;
 
     if (!font_name) {
-        HPDF_RaiseError (&pdf->error, HPDF_INVALID_FONT_NAME, 0);
+		RAISE_ERROR(&pdf->error, HPDF_INVALID_FONT_NAME, 0);
         return NULL;
     }
 
@@ -1386,7 +1383,7 @@ HPDF_GetFont  (HPDF_Doc          pdf,
 
             break;
         default:
-            HPDF_RaiseError (&pdf->error, HPDF_UNSUPPORTED_FONT_TYPE, 0);
+		    RAISE_ERROR(&pdf->error, HPDF_UNSUPPORTED_FONT_TYPE, 0);
             return NULL;
     }
 
@@ -1458,7 +1455,7 @@ LoadType1FontFromStream  (HPDF_Doc      pdf,
         HPDF_FontDef  tmpdef = HPDF_Doc_FindFontDef (pdf, def->base_font);
         if (tmpdef) {
             HPDF_FontDef_Free (def);
-            HPDF_SetError (&pdf->error, HPDF_FONT_EXISTS, 0);
+			SET_ERROR(&pdf->error, HPDF_FONT_EXISTS, 0);
             return NULL;
         }
 
@@ -1795,8 +1792,7 @@ HPDF_SetPageLayout  (HPDF_Doc          pdf,
         return HPDF_INVALID_DOCUMENT;
 
     if (layout < 0 || layout >= HPDF_PAGE_LAYOUT_EOF)
-        return HPDF_RaiseError (&pdf->error, HPDF_PAGE_LAYOUT_OUT_OF_RANGE,
-                (HPDF_STATUS)layout);
+		return RAISE_ERROR(&pdf->error, HPDF_PAGE_LAYOUT_OUT_OF_RANGE, (HPDF_STATUS)layout);
 
     if ((layout == HPDF_PAGE_LAYOUT_TWO_PAGE_LEFT || layout == HPDF_PAGE_LAYOUT_TWO_PAGE_RIGHT) && pdf->pdf_version < HPDF_VER_15)
         pdf->pdf_version = HPDF_VER_15 ;
@@ -1832,8 +1828,7 @@ HPDF_SetPageMode  (HPDF_Doc        pdf,
         return HPDF_INVALID_DOCUMENT;
 
     if (mode < 0 || mode >= HPDF_PAGE_MODE_EOF)
-        return HPDF_RaiseError (&pdf->error, HPDF_PAGE_MODE_OUT_OF_RANGE,
-                (HPDF_STATUS)mode);
+		return RAISE_ERROR(&pdf->error, HPDF_PAGE_MODE_OUT_OF_RANGE, (HPDF_STATUS)mode);
 
     ret = HPDF_Catalog_SetPageMode (pdf->catalog, mode);
     if (ret != HPDF_OK)
@@ -1855,7 +1850,7 @@ HPDF_SetOpenAction  (HPDF_Doc            pdf,
         return HPDF_INVALID_DOCUMENT;
 
     if (open_action && !HPDF_Destination_Validate (open_action))
-        return HPDF_RaiseError (&pdf->error, HPDF_INVALID_DESTINATION, 0);
+		return RAISE_ERROR(&pdf->error, HPDF_INVALID_DESTINATION, 0);
 
     ret = HPDF_Catalog_SetOpenAction (pdf->catalog, open_action);
     if (ret != HPDF_OK)
@@ -1919,8 +1914,7 @@ HPDF_AddPageLabel  (HPDF_Doc             pdf,
         return HPDF_CheckError (&pdf->error);
 
     if (style < 0 || style >= HPDF_PAGE_NUM_STYLE_EOF)
-        return HPDF_RaiseError (&pdf->error, HPDF_PAGE_NUM_STYLE_OUT_OF_RANGE,
-                    (HPDF_STATUS)style);
+		return RAISE_ERROR(&pdf->error, HPDF_PAGE_NUM_STYLE_OUT_OF_RANGE, (HPDF_STATUS)style);
 
     ret = HPDF_Catalog_AddPageLabel (pdf->catalog, page_num, page_label);
     if (ret != HPDF_OK)
@@ -2096,7 +2090,7 @@ HPDF_CreateOutline  (HPDF_Doc       pdf,
     }
 
     if (!HPDF_Outline_Validate (parent) || pdf->mmgr != parent->mmgr) {
-        HPDF_RaiseError (&pdf->error, HPDF_INVALID_OUTLINE, 0);
+		RAISE_ERROR(&pdf->error, HPDF_INVALID_OUTLINE, 0);
         return NULL;
     }
 
@@ -2134,7 +2128,7 @@ HPDF_SetCompressionMode  (HPDF_Doc    pdf,
         return HPDF_INVALID_DOCUMENT;
 
     if (mode != (mode & HPDF_COMP_MASK))
-        return HPDF_RaiseError (&pdf->error, HPDF_INVALID_COMPRESSION_MODE, 0);
+		return RAISE_ERROR(&pdf->error, HPDF_INVALID_COMPRESSION_MODE, 0);
 
 #ifdef LIBHPDF_HAVE_ZLIB
     pdf->compression_mode = mode;
@@ -2281,7 +2275,7 @@ HPDF_ICC_LoadIccFromMem (HPDF_Doc   pdf,
 	   HPDF_Dict_AddName (icc, "Alternate", "DeviceCMYK");
 	   break;
    default : /* unsupported */
-       HPDF_RaiseError (&pdf->error, HPDF_INVALID_ICC_COMPONENT_NUM, 0);
+	   RAISE_ERROR(&pdf->error, HPDF_INVALID_ICC_COMPONENT_NUM, 0);
        HPDF_Dict_Free(icc);
        return NULL;
    }

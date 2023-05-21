@@ -44,7 +44,7 @@ HPDF_Destination_New  (HPDF_MMgr   mmgr,
     HPDF_PTRACE((" HPDF_Destination_New\n"));
 
     if (!HPDF_Page_Validate (target)) {
-        HPDF_SetError (mmgr->error, HPDF_INVALID_PAGE, 0);
+		SET_ERROR(mmgr->error, HPDF_INVALID_PAGE, 0);
         return NULL;
     }
 
@@ -76,21 +76,21 @@ HPDF_Destination_Validate (HPDF_Destination  dst)
     HPDF_Obj_Header *header = (HPDF_Obj_Header *)dst;
     HPDF_Page target;
 
-    if (!dst || header->obj_class !=
-                (HPDF_OCLASS_ARRAY | HPDF_OSUBCLASS_DESTINATION))
-        return HPDF_FALSE;
+	if (!dst || header->obj_class != (HPDF_OCLASS_ARRAY | HPDF_OSUBCLASS_DESTINATION))
+		return HPDF_FALSE;
 
-    /* destination-types not defined. */
-    if (dst->list->count < 2)
-        return HPDF_FALSE;
+	/* destination-types not defined. */
+	if (dst->list->count < 2)
+		return HPDF_FALSE;
 
-    target = (HPDF_Page)HPDF_Array_GetItem (dst, 0, HPDF_OCLASS_DICT);
-    if (!HPDF_Page_Validate (target)) {
-	    HPDF_SetError (dst->error, HPDF_INVALID_PAGE, 0);
-        return HPDF_FALSE;
-    }
+	target = (HPDF_Page)HPDF_Array_GetItem(dst, 0, HPDF_OCLASS_DICT);
+	if (!HPDF_Page_Validate(target))
+	{
+		SET_ERROR(dst->error, HPDF_INVALID_PAGE, 0);
+		return HPDF_FALSE;
+	}
 
-    return HPDF_TRUE;
+	return HPDF_TRUE;
 }
 
 
@@ -109,7 +109,7 @@ HPDF_Destination_SetXYZ  (HPDF_Destination  dst,
         return HPDF_INVALID_DESTINATION;
 
     if (left < 0 || top < 0 || zoom < 0.08 || zoom > 32)
-        return HPDF_RaiseError (dst->error, HPDF_INVALID_PARAMETER, 0);
+		return RAISE_ERROR(dst->error, HPDF_INVALID_PARAMETER, 0);
 
 
     target = (HPDF_Page)HPDF_Array_GetItem (dst, 0, HPDF_OCLASS_DICT);

@@ -101,8 +101,7 @@ LoadJpegHeader (HPDF_Image   image,
             break;
         } else if ((tag | 0x00FF) != 0xFFFF)
             /* lost marker */
-            return HPDF_SetError (image->error, HPDF_UNSUPPORTED_JPEG_FORMAT,
-                    0);
+			return SET_ERROR(image->error, HPDF_UNSUPPORTED_JPEG_FORMAT, 0);
 
         if (HPDF_Stream_Seek (stream, size - 2, HPDF_SEEK_CUR) != HPDF_OK)
                 return HPDF_Error_GetCode (stream->error);
@@ -152,8 +151,7 @@ LoadJpegHeader (HPDF_Image   image,
 
             break;
         default:
-            return HPDF_SetError (image->error, HPDF_UNSUPPORTED_JPEG_FORMAT,
-                    0);
+		    return SET_ERROR(image->error, HPDF_UNSUPPORTED_JPEG_FORMAT, 0);
     }
 
     if (HPDF_Dict_Add (image, "ColorSpace",
@@ -234,7 +232,7 @@ HPDF_Image_LoadJpegImageFromMem  (HPDF_MMgr    mmgr,
 
 	jpeg_data = HPDF_MemStream_New(mmgr,size);
 	if (!HPDF_Stream_Validate (jpeg_data)) {
-		HPDF_RaiseError (mmgr->error, HPDF_INVALID_STREAM, 0);
+		RAISE_ERROR(mmgr->error, HPDF_INVALID_STREAM, 0);
 		return NULL;
 	}
 
@@ -269,7 +267,7 @@ HPDF_Image_LoadRawImage (HPDF_MMgr          mmgr,
     if (color_space != HPDF_CS_DEVICE_GRAY &&
             color_space != HPDF_CS_DEVICE_RGB &&
             color_space != HPDF_CS_DEVICE_CMYK) {
-        HPDF_SetError (mmgr->error, HPDF_INVALID_COLOR_SPACE, 0);
+		SET_ERROR(mmgr->error, HPDF_INVALID_COLOR_SPACE, 0);
         return NULL;
     }
 
@@ -310,7 +308,7 @@ HPDF_Image_LoadRawImage (HPDF_MMgr          mmgr,
         return NULL;
 
     if (image->stream->size != size) {
-        HPDF_SetError (image->error, HPDF_INVALID_IMAGE, 0);
+		SET_ERROR(image->error, HPDF_INVALID_IMAGE, 0);
         return NULL;
     }
 
@@ -336,13 +334,13 @@ HPDF_Image_LoadRawImageFromMem  (HPDF_MMgr          mmgr,
     if (color_space != HPDF_CS_DEVICE_GRAY &&
             color_space != HPDF_CS_DEVICE_RGB &&
             color_space != HPDF_CS_DEVICE_CMYK) {
-        HPDF_SetError (mmgr->error, HPDF_INVALID_COLOR_SPACE, 0);
+		SET_ERROR(mmgr->error, HPDF_INVALID_COLOR_SPACE, 0);
         return NULL;
     }
 
     if (bits_per_component != 1 && bits_per_component != 2 &&
             bits_per_component != 4 && bits_per_component != 8) {
-        HPDF_SetError (mmgr->error, HPDF_INVALID_IMAGE, 0);
+		SET_ERROR(mmgr->error, HPDF_INVALID_IMAGE, 0);
         return NULL;
     }
 
@@ -404,15 +402,15 @@ HPDF_Image_Validate (HPDF_Image  image)
     if (!image)
         return HPDF_FALSE;
 
-    if (image->header.obj_class != (HPDF_OSUBCLASS_XOBJECT |
-                HPDF_OCLASS_DICT)) {
-        HPDF_RaiseError (image->error, HPDF_INVALID_IMAGE, 0);
-        return HPDF_FALSE;
-    }
+    if (image->header.obj_class != (HPDF_OSUBCLASS_XOBJECT | HPDF_OCLASS_DICT))
+	{
+		RAISE_ERROR(image->error, HPDF_INVALID_IMAGE, 0);
+		return HPDF_FALSE;
+	}
 
     subtype = HPDF_Dict_GetItem (image, "Subtype", HPDF_OCLASS_NAME);
     if (!subtype || HPDF_StrCmp (subtype->value, "Image") != 0) {
-        HPDF_RaiseError (image->error, HPDF_INVALID_IMAGE, 0);
+		RAISE_ERROR(image->error, HPDF_INVALID_IMAGE, 0);
         return HPDF_FALSE;
     }
 
@@ -536,8 +534,7 @@ HPDF_Image_SetMask (HPDF_Image   image,
         return HPDF_INVALID_IMAGE;
 
     if (mask && HPDF_Image_GetBitsPerComponent (image) != 1)
-        return HPDF_SetError (image->error, HPDF_INVALID_BIT_PER_COMPONENT,
-                0);
+		return SET_ERROR(image->error, HPDF_INVALID_BIT_PER_COMPONENT, 0);
 
     image_mask = HPDF_Dict_GetItem (image, "ImageMask", HPDF_OCLASS_BOOLEAN);
     if (!image_mask) {
@@ -587,19 +584,18 @@ HPDF_Image_SetColorMask (HPDF_Image   image,
         return HPDF_INVALID_IMAGE;
 
     if (HPDF_Dict_GetItem (image, "ImageMask", HPDF_OCLASS_BOOLEAN))
-        return HPDF_RaiseError (image->error, HPDF_INVALID_OPERATION, 0);
+		return RAISE_ERROR(image->error, HPDF_INVALID_OPERATION, 0);
 
-    if (HPDF_Image_GetBitsPerComponent (image) != 8)
-        return HPDF_RaiseError (image->error, HPDF_INVALID_BIT_PER_COMPONENT,
-                0);
+    if (HPDF_Image_GetBitsPerComponent(image) != 8)
+		return RAISE_ERROR(image->error, HPDF_INVALID_BIT_PER_COMPONENT, 0);
 
     name = HPDF_Image_GetColorSpace (image);
     if (!name || HPDF_StrCmp (COL_RGB, name) != 0)
-        return HPDF_RaiseError (image->error, HPDF_INVALID_COLOR_SPACE, 0);
+		return RAISE_ERROR(image->error, HPDF_INVALID_COLOR_SPACE, 0);
 
     /* Each integer must be in the range 0 to 2^BitsPerComponent - 1 */
     if (rmax > 255 || gmax > 255 || bmax > 255)
-       return HPDF_RaiseError (image->error, HPDF_INVALID_PARAMETER, 0);
+		return RAISE_ERROR(image->error, HPDF_INVALID_PARAMETER, 0);
 
     array = HPDF_Array_New (image->mmgr);
     if (!array)
@@ -632,11 +628,11 @@ HPDF_Image_AddSMask  (HPDF_Image  image,
        return HPDF_INVALID_IMAGE;
 
    if (HPDF_Dict_GetItem (image, "SMask", HPDF_OCLASS_BOOLEAN))
-       return HPDF_RaiseError (image->error, HPDF_INVALID_OPERATION, 0);
+	   return RAISE_ERROR(image->error, HPDF_INVALID_OPERATION, 0);
 
    name = HPDF_Image_GetColorSpace (smask);
    if (!name || HPDF_StrCmp (COL_GRAY, name) != 0)
-       return HPDF_RaiseError (smask->error, HPDF_INVALID_COLOR_SPACE, 0);
+	   return RAISE_ERROR(smask->error, HPDF_INVALID_COLOR_SPACE, 0);
 
    return HPDF_Dict_Add (image, "SMask", smask);
 }

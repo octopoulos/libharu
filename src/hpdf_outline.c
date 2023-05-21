@@ -292,8 +292,8 @@ HPDF_Outline_SetDestination (HPDF_Outline      outline,
     if (!HPDF_Outline_Validate (outline))
         return HPDF_INVALID_OUTLINE;
 
-    if (!HPDF_Destination_Validate (dst))
-        return HPDF_RaiseError (outline->error, HPDF_INVALID_DESTINATION, 0);
+    if (!HPDF_Destination_Validate(dst))
+		return RAISE_ERROR(outline->error, HPDF_INVALID_DESTINATION, 0);
 
     if (dst == NULL)
         return HPDF_Dict_RemoveElement (outline, "Dest");

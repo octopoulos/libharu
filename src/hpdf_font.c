@@ -34,14 +34,14 @@ HPDF_Font_TextWidth  (HPDF_Font        font,
         return tw;
 
     if (len > HPDF_LIMIT_MAX_STRING_LEN) {
-        HPDF_RaiseError (font->error, HPDF_STRING_OUT_OF_RANGE, 0);
+		RAISE_ERROR(font->error, HPDF_STRING_OUT_OF_RANGE, 0);
         return tw;
     }
 
     attr = (HPDF_FontAttr)font->attr;
 
     if (!attr->text_width_fn) {
-        HPDF_SetError (font->error, HPDF_INVALID_OBJECT, 0);
+		SET_ERROR(font->error, HPDF_INVALID_OBJECT, 0);
         return tw;
     }
 
@@ -70,14 +70,14 @@ HPDF_Font_MeasureText (HPDF_Font          font,
         return 0;
 
     if (len > HPDF_LIMIT_MAX_STRING_LEN) {
-        HPDF_RaiseError (font->error, HPDF_STRING_OUT_OF_RANGE, 0);
+		RAISE_ERROR(font->error, HPDF_STRING_OUT_OF_RANGE, 0);
         return 0;
     }
 
     attr = (HPDF_FontAttr)font->attr;
 
     if (!attr->measure_text_fn) {
-        HPDF_RaiseError (font->error, HPDF_INVALID_OBJECT, 0);
+		RAISE_ERROR(font->error, HPDF_INVALID_OBJECT, 0);
         return 0;
     }
 

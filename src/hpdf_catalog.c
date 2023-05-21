@@ -77,10 +77,9 @@ HPDF_Catalog_GetRoot  (HPDF_Catalog  catalog)
     if (!catalog)
         return NULL;
 
-    pages = HPDF_Dict_GetItem (catalog, "Pages", HPDF_OCLASS_DICT);
-    if (!pages || pages->header.obj_class != (HPDF_OSUBCLASS_PAGES |
-                HPDF_OCLASS_DICT))
-        HPDF_SetError (catalog->error, HPDF_PAGE_CANNOT_GET_ROOT_PAGES, 0);
+    pages = HPDF_Dict_GetItem(catalog, "Pages", HPDF_OCLASS_DICT);
+	if (!pages || pages->header.obj_class != (HPDF_OSUBCLASS_PAGES | HPDF_OCLASS_DICT))
+		SET_ERROR(catalog->error, HPDF_PAGE_CANNOT_GET_ROOT_PAGES, 0);
 
     return pages;
 }
@@ -183,11 +182,11 @@ HPDF_Catalog_Validate  (HPDF_Catalog   catalog)
     if (!catalog)
         return HPDF_FALSE;
 
-    if (catalog->header.obj_class != (HPDF_OSUBCLASS_CATALOG |
-                HPDF_OCLASS_DICT)) {
-        HPDF_SetError (catalog->error, HPDF_INVALID_OBJECT, 0);
-        return HPDF_FALSE;
-    }
+    if (catalog->header.obj_class != (HPDF_OSUBCLASS_CATALOG | HPDF_OCLASS_DICT))
+	{
+		SET_ERROR(catalog->error, HPDF_INVALID_OBJECT, 0);
+		return HPDF_FALSE;
+	}
 
     return HPDF_TRUE;
 }

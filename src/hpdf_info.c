@@ -60,7 +60,7 @@ HPDF_Info_SetInfoAttr (HPDF_Dict        info,
     HPDF_PTRACE((" HPDF_Info_SetInfoAttr\n"));
 
     if (type <= HPDF_INFO_MOD_DATE)
-        return HPDF_SetError (info->error, HPDF_INVALID_PARAMETER, 0);
+		return SET_ERROR(info->error, HPDF_INVALID_PARAMETER, 0);
 
     if (type == HPDF_INFO_TRAPPED)
         return HPDF_Dict_AddName(info, name, value);
@@ -103,7 +103,7 @@ HPDF_Info_SetInfoDateAttr (HPDF_Dict      info,
     HPDF_PTRACE((" HPDF_Info_SetInfoDateAttr\n"));
 
     if (type > HPDF_INFO_MOD_DATE)
-        return HPDF_SetError (info->error, HPDF_INVALID_PARAMETER, 0);
+		return SET_ERROR(info->error, HPDF_INVALID_PARAMETER, 0);
 
     HPDF_MemSet (tmp, 0, HPDF_DATE_TIME_STR_LEN + 1);
     if (value.month < 1 || 12 < value.month ||
@@ -115,7 +115,7 @@ HPDF_Info_SetInfoDateAttr (HPDF_Dict      info,
                 value.ind != ' ') ||
         23 < value.off_hour ||
         59 < value.off_minutes) {
-        return HPDF_SetError (info->error, HPDF_INVALID_DATE_TIME, 0);
+		return SET_ERROR(info->error, HPDF_INVALID_DATE_TIME, 0);
     }
 
     switch (value.month) {
@@ -127,7 +127,7 @@ HPDF_Info_SetInfoDateAttr (HPDF_Dict      info,
         case 10:
         case 12:
             if (value.day > 31)
-                return HPDF_SetError (info->error, HPDF_INVALID_DATE_TIME, 0);
+			    return SET_ERROR(info->error, HPDF_INVALID_DATE_TIME, 0);
 
             break;
         case 4:
@@ -135,18 +135,18 @@ HPDF_Info_SetInfoDateAttr (HPDF_Dict      info,
         case 9:
         case 11:
             if (value.day > 30)
-                return HPDF_SetError (info->error, HPDF_INVALID_DATE_TIME, 0);
+			    return SET_ERROR(info->error, HPDF_INVALID_DATE_TIME, 0);
 
             break;
         case 2:
             if (value.day > 29 || (value.day == 29 &&
                 (value.year % 4 != 0 ||
                 (value.year % 100 == 0 && value.year % 400 != 0))))
-                return HPDF_SetError (info->error, HPDF_INVALID_DATE_TIME, 0);
+			    return SET_ERROR(info->error, HPDF_INVALID_DATE_TIME, 0);
 
             break;
         default:
-            return HPDF_SetError (info->error, HPDF_INVALID_DATE_TIME, 0);
+		    return SET_ERROR(info->error, HPDF_INVALID_DATE_TIME, 0);
     }
 
     ptmp = (char *)HPDF_MemCpy ((HPDF_BYTE *)tmp, (HPDF_BYTE *)"D:", 2);

@@ -55,10 +55,8 @@ ExtGState_Check  (HPDF_ExtGState  ext_gstate)
     if (!HPDF_ExtGState_Validate (ext_gstate))
         return HPDF_INVALID_OBJECT;
     
-    if (ext_gstate->header.obj_class == 
-            (HPDF_OSUBCLASS_EXT_GSTATE_R | HPDF_OCLASS_DICT))
-        return HPDF_RaiseError (ext_gstate->error, HPDF_EXT_GSTATE_READ_ONLY,
-                0);
+    if (ext_gstate->header.obj_class == (HPDF_OSUBCLASS_EXT_GSTATE_R | HPDF_OCLASS_DICT))
+		return RAISE_ERROR(ext_gstate->error, HPDF_EXT_GSTATE_READ_ONLY, 0);
 
     return HPDF_OK;
 }
@@ -97,8 +95,7 @@ HPDF_ExtGState_SetAlphaStroke  (HPDF_ExtGState   ext_gstate,
         return ret;
     
     if (value < 0 || value > 1.0f)
-        return HPDF_RaiseError (ext_gstate->error, 
-                HPDF_EXT_GSTATE_OUT_OF_RANGE, 0);
+		return RAISE_ERROR(ext_gstate->error, HPDF_EXT_GSTATE_OUT_OF_RANGE, 0);
 
     return HPDF_Dict_AddReal (ext_gstate, "CA", value);
 }
@@ -114,8 +111,7 @@ HPDF_ExtGState_SetAlphaFill  (HPDF_ExtGState   ext_gstate,
         return ret;
 
     if (value < 0 || value > 1.0f)
-        return HPDF_RaiseError (ext_gstate->error, 
-                HPDF_EXT_GSTATE_OUT_OF_RANGE, 0);
+		return RAISE_ERROR(ext_gstate->error, HPDF_EXT_GSTATE_OUT_OF_RANGE, 0);
 
     return HPDF_Dict_AddReal (ext_gstate, "ca", value);
 }
@@ -131,8 +127,7 @@ HPDF_ExtGState_SetBlendMode  (HPDF_ExtGState   ext_gstate,
         return ret;
 
     if ((int)bmode < 0 || (int)bmode > (int)HPDF_BM_EOF)
-        return HPDF_RaiseError (ext_gstate->error, 
-                HPDF_EXT_GSTATE_OUT_OF_RANGE, 0);
+		return RAISE_ERROR(ext_gstate->error, HPDF_EXT_GSTATE_OUT_OF_RANGE, 0);
 
     return HPDF_Dict_AddName (ext_gstate, "BM", HPDF_BM_NAMES[(int)bmode]);
 }

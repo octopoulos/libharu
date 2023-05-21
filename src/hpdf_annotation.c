@@ -211,7 +211,7 @@ HPDF_Annotation_SetBorderStyle  (HPDF_Annotation  annot,
             ret += HPDF_Dict_AddName (bs, "S", "U");
             break;
         default:
-            return  HPDF_SetError (annot->error, HPDF_ANNOT_INVALID_BORDER_STYLE, 0);
+		    return SET_ERROR(annot->error, HPDF_ANNOT_INVALID_BORDER_STYLE, 0);
     }
 
     if (width != HPDF_BS_DEF_WIDTH)
@@ -342,7 +342,7 @@ HPDF_LinkAnnot_SetBorderStyle  (HPDF_Annotation  annot,
         return HPDF_INVALID_ANNOTATION;
 
     if (width < 0)
-        return HPDF_RaiseError (annot->error, HPDF_INVALID_PARAMETER, 0);
+		return RAISE_ERROR(annot->error, HPDF_INVALID_PARAMETER, 0);
 
     array = HPDF_Array_New (annot->mmgr);
     if (!array)
@@ -623,8 +623,7 @@ HPDF_TextAnnot_SetIcon  (HPDF_Annotation  annot,
         return HPDF_INVALID_ANNOTATION;
 
     if (icon >= HPDF_ANNOT_ICON_EOF)
-        return HPDF_RaiseError (annot->error, HPDF_ANNOT_INVALID_ICON,
-                (HPDF_STATUS)icon);
+		return RAISE_ERROR(annot->error, HPDF_ANNOT_INVALID_ICON, (HPDF_STATUS)icon);
 
     if (HPDF_Dict_AddName (annot, "Name",
         HPDF_ANNOT_ICON_NAMES_NAMES[(HPDF_INT)icon]) != HPDF_OK)
@@ -837,11 +836,11 @@ CheckSubType (HPDF_Annotation  annot,
 
     subtype = HPDF_Dict_GetItem (annot, "Subtype", HPDF_OCLASS_NAME);
 
-    if (!subtype || HPDF_StrCmp (subtype->value,
-                HPDF_ANNOT_TYPE_NAMES[(HPDF_INT)type]) != 0) {
-        HPDF_RaiseError (annot->error, HPDF_INVALID_ANNOTATION, 0);
-        return HPDF_FALSE;
-    }
+    if (!subtype || HPDF_StrCmp(subtype->value, HPDF_ANNOT_TYPE_NAMES[(HPDF_INT)type]) != 0)
+	{
+		RAISE_ERROR(annot->error, HPDF_INVALID_ANNOTATION, 0);
+		return HPDF_FALSE;
+	}
 
     return HPDF_TRUE;
 }

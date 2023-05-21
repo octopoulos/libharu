@@ -252,8 +252,7 @@ LoadAfm (HPDF_FontDef  fontdef,
         s = GetKeyword (buf, buf2, HPDF_LIMIT_MAX_NAME_LEN + 1);
         if (HPDF_StrCmp (buf2, "CX") == 0) {
             /* not supported yet. */
-            return HPDF_SetError (fontdef->error,
-                    HPDF_INVALID_CHAR_MATRICS_DATA, 0);
+			return SET_ERROR(fontdef->error, HPDF_INVALID_CHAR_MATRICS_DATA, 0);
         } else
         if (HPDF_StrCmp (buf2, "C") == 0) {
             s += 2;
@@ -264,26 +263,25 @@ LoadAfm (HPDF_FontDef  fontdef,
             cdata->char_cd = (HPDF_INT16)HPDF_AToI (buf2);
 
         } else
-            return HPDF_SetError (fontdef->error,
-                    HPDF_INVALID_CHAR_MATRICS_DATA, 0);
+			return SET_ERROR(fontdef->error, HPDF_INVALID_CHAR_MATRICS_DATA, 0);
 
         /* WX Character width */
         s = HPDF_StrStr (s, "WX ", 0);
         if (!s)
-            return HPDF_SetError (fontdef->error, HPDF_INVALID_WX_DATA, 0);
+			return SET_ERROR(fontdef->error, HPDF_INVALID_WX_DATA, 0);
 
         s += 3;
 
         s = GetKeyword (s, buf2, HPDF_LIMIT_MAX_NAME_LEN + 1);
         if (buf2[0] == 0)
-            return HPDF_SetError (fontdef->error, HPDF_INVALID_WX_DATA, 0);
+			return SET_ERROR(fontdef->error, HPDF_INVALID_WX_DATA, 0);
 
         cdata->width = (HPDF_INT16)HPDF_AToI (buf2);
 
         /* N PostScript language character name */
         s = HPDF_StrStr (s, "N ", 0);
         if (!s)
-            return HPDF_SetError (fontdef->error, HPDF_INVALID_N_DATA, 0);
+			return SET_ERROR(fontdef->error, HPDF_INVALID_N_DATA, 0);
 
         s += 2;
 
@@ -369,7 +367,7 @@ LoadFontData (HPDF_FontDef  fontdef,
     }
 
     if (attr->length1 == 0 || attr->length2 == 0)
-        return HPDF_SetError (fontdef->error, HPDF_UNSUPPORTED_TYPE1_FONT, 0);
+		return SET_ERROR(fontdef->error, HPDF_UNSUPPORTED_TYPE1_FONT, 0);
 
     attr->length3 = attr->font_data->size - attr->length1 - attr->length2;
 

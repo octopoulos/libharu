@@ -1156,6 +1156,12 @@ HPDF_EXPORT(HPDF_TransMatrix)
 HPDF_Page_GetTextMatrix  (HPDF_Page   page);
 
 
+HPDF_EXPORT(HPDF_INT)
+HPDF_Page_Simulate(HPDF_Page page, HPDF_INT simulate);
+
+HPDF_EXPORT(void)
+HPDF_Page_UserData(HPDF_Page page, void* userData);
+
 HPDF_EXPORT(HPDF_UINT)
 HPDF_Page_GetGStateDepth  (HPDF_Page   page);
 
@@ -1587,6 +1593,8 @@ HPDF_Page_TextOut  (HPDF_Page    page,
                     const char  *text);
 
 
+typedef float (*TextRectCb)(int lineId, void* userData);
+
 HPDF_EXPORT(HPDF_STATUS)
 HPDF_Page_TextRect  (HPDF_Page            page,
                      HPDF_REAL            left,
@@ -1595,7 +1603,8 @@ HPDF_Page_TextRect  (HPDF_Page            page,
                      HPDF_REAL            bottom,
                      const char          *text,
                      HPDF_TextAlignment   align,
-                     HPDF_UINT           *len);
+                     HPDF_UINT           *len,
+					 TextRectCb           callback);
 
 
 HPDF_EXPORT(HPDF_STATUS)
