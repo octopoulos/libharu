@@ -456,7 +456,7 @@ LoadFontData (HPDF_FontDef  fontdef,
 
     tbl = FindTable (fontdef, "glyf");
     if (!tbl)
-        return HPDF_SetError (fontdef->error, HPDF_TTF_MISSING_TABLE, 4);
+		return SET_ERROR(fontdef->error, HPDF_TTF_MISSING_TABLE, 4);
 
     attr->glyph_tbl.base_offset = tbl->offset;
     fontdef->cap_height =
@@ -505,7 +505,7 @@ LoadFontData2 (HPDF_FontDef  fontdef,
         return ret;
 
     if (HPDF_MemCmp (tag, (HPDF_BYTE *)"ttcf", 4) != 0)
-        return HPDF_SetError (fontdef->error, HPDF_INVALID_TTC_FILE, 0);
+		return SET_ERROR(fontdef->error, HPDF_INVALID_TTC_FILE, 0);
 
     if ((ret = HPDF_Stream_Seek (stream, 8, HPDF_SEEK_SET)) != HPDF_OK)
         return ret;
@@ -517,7 +517,7 @@ LoadFontData2 (HPDF_FontDef  fontdef,
                 (HPDF_UINT)num_fonts));
 
     if (index >= num_fonts)
-        return HPDF_SetError (fontdef->error, HPDF_INVALID_TTC_INDEX, 0);
+		return SET_ERROR(fontdef->error, HPDF_INVALID_TTC_INDEX, 0);
 
     /* read offset table for target font and set stream positioning to offset
      * value.
@@ -708,9 +708,8 @@ LoadTTFTable (HPDF_FontDef  fontdef)
     if (ret != HPDF_OK)
         return HPDF_Error_GetCode (fontdef->error);
 
-    if (attr->offset_tbl.num_tables * sizeof(HPDF_TTFTable) >
-            HPDF_TTF_MAX_MEM_SIZ)
-        return HPDF_SetError (fontdef->error, HPDF_TTF_INVALID_FOMAT, 0);
+    if (attr->offset_tbl.num_tables * sizeof(HPDF_TTFTable) > HPDF_TTF_MAX_MEM_SIZ)
+		return SET_ERROR(fontdef->error, HPDF_TTF_INVALID_FOMAT, 0);
 
     attr->offset_tbl.table = HPDF_GetMem (fontdef->mmgr,
                         sizeof(HPDF_TTFTable) * attr->offset_tbl.num_tables);
@@ -752,7 +751,7 @@ ParseHead (HPDF_FontDef  fontdef)
     HPDF_PTRACE ((" HPDF_TTFontDef_ParseHead\n"));
 
     if (!tbl)
-        return HPDF_SetError (fontdef->error, HPDF_TTF_MISSING_TABLE, 5);
+		return SET_ERROR(fontdef->error, HPDF_TTF_MISSING_TABLE, 5);
 
     ret = HPDF_Stream_Seek (attr->stream, tbl->offset, HPDF_SEEK_SET);
     if (ret != HPDF_OK)
@@ -808,7 +807,7 @@ ParseMaxp (HPDF_FontDef  fontdef)
     HPDF_PTRACE ((" HPDF_TTFontDef_ParseMaxp\n"));
 
     if (!tbl)
-        return HPDF_SetError (fontdef->error, HPDF_TTF_MISSING_TABLE, 9);
+		return SET_ERROR(fontdef->error, HPDF_TTF_MISSING_TABLE, 9);
 
     ret = HPDF_Stream_Seek (attr->stream, tbl->offset + 4, HPDF_SEEK_SET);
     if (ret != HPDF_OK)
@@ -833,7 +832,7 @@ ParseHhea (HPDF_FontDef  fontdef)
     HPDF_PTRACE ((" HPDF_TTFontDef_ParseHhea\n"));
 
     if (!tbl)
-        return HPDF_SetError (fontdef->error, HPDF_TTF_MISSING_TABLE, 6);
+		return SET_ERROR(fontdef->error, HPDF_TTF_MISSING_TABLE, 6);
 
     ret = HPDF_Stream_Seek (attr->stream, tbl->offset + 4, HPDF_SEEK_SET);
     if (ret != HPDF_OK)
@@ -879,7 +878,7 @@ ParseCMap (HPDF_FontDef  fontdef)
     HPDF_PTRACE ((" HPDF_TTFontDef_ParseCMap\n"));
 
     if (!tbl)
-        return HPDF_SetError (fontdef->error, HPDF_TTF_MISSING_TABLE, 1);
+		return SET_ERROR(fontdef->error, HPDF_TTF_MISSING_TABLE, 1);
 
     ret = HPDF_Stream_Seek (attr->stream, tbl->offset, HPDF_SEEK_SET);
     if (ret != HPDF_OK)
@@ -890,7 +889,7 @@ ParseCMap (HPDF_FontDef  fontdef)
         return HPDF_Error_GetCode (fontdef->error);
 
     if (version != 0)
-        return HPDF_SetError (fontdef->error, HPDF_TTF_INVALID_FOMAT, 0);
+		return SET_ERROR(fontdef->error, HPDF_TTF_INVALID_FOMAT, 0);
 
     ret += GetUINT16 (attr->stream, &num_cmap);
     if (ret != HPDF_OK)
@@ -950,7 +949,7 @@ ParseCMap (HPDF_FontDef  fontdef)
         ret = ParseCMAP_format0(fontdef, byte_encoding_offset + tbl->offset);
     } else {
         HPDF_PTRACE((" cannot found target cmap.\n"));
-        return HPDF_SetError (fontdef->error, HPDF_TTF_INVALID_FOMAT, 0);
+		return SET_ERROR(fontdef->error, HPDF_TTF_INVALID_FOMAT, 0);
     }
 
     return ret;
@@ -982,7 +981,7 @@ ParseCMAP_format0  (HPDF_FontDef  fontdef,
         return HPDF_Error_GetCode (fontdef->error);
 
     if (attr->cmap.format != 0)
-        return HPDF_SetError (fontdef->error, HPDF_TTF_INVALID_FOMAT, 0);
+		return SET_ERROR(fontdef->error, HPDF_TTF_INVALID_FOMAT, 0);
 
     size = 256;
     ret = HPDF_Stream_Read (attr->stream, array, &size);
@@ -1035,7 +1034,7 @@ ParseCMAP_format4  (HPDF_FontDef  fontdef,
         return HPDF_Error_GetCode (fontdef->error);
 
     if (attr->cmap.format != 4)
-        return HPDF_SetError (fontdef->error, HPDF_TTF_INVALID_FOMAT, 0);
+		return SET_ERROR(fontdef->error, HPDF_TTF_INVALID_FOMAT, 0);
 
     ret += GetUINT16 (attr->stream, &attr->cmap.seg_count_x2);
     ret += GetUINT16 (attr->stream, &attr->cmap.search_range);
@@ -1145,7 +1144,7 @@ HPDF_TTFontDef_GetGlyphid  (HPDF_FontDef   fontdef,
 
     /* format 4 */
     if (attr->cmap.seg_count_x2 == 0) {
-        HPDF_SetError (fontdef->error, HPDF_TTF_INVALID_CMAP, 0);
+		SET_ERROR(fontdef->error, HPDF_TTF_INVALID_CMAP, 0);
         return 0;
     }
 
@@ -1354,7 +1353,7 @@ ParseHmtx  (HPDF_FontDef  fontdef)
     HPDF_PTRACE ((" HPDF_TTFontDef_ParseHtmx\n"));
 
     if (!tbl)
-        return HPDF_SetError (fontdef->error, HPDF_TTF_MISSING_TABLE, 7);
+		return SET_ERROR(fontdef->error, HPDF_TTF_MISSING_TABLE, 7);
 
     ret = HPDF_Stream_Seek (attr->stream, tbl->offset, HPDF_SEEK_SET);
     if (ret != HPDF_OK)
@@ -1411,7 +1410,7 @@ ParseLoca  (HPDF_FontDef  fontdef)
     HPDF_PTRACE ((" HPDF_TTFontDef_ParseLoca\n"));
 
     if (!tbl)
-        return HPDF_SetError (fontdef->error, HPDF_TTF_MISSING_TABLE, 8);
+		return SET_ERROR(fontdef->error, HPDF_TTF_MISSING_TABLE, 8);
 
     ret = HPDF_Stream_Seek (attr->stream, tbl->offset, HPDF_SEEK_SET);
     if (ret != HPDF_OK)
@@ -1528,7 +1527,7 @@ ParseName  (HPDF_FontDef  fontdef)
     HPDF_PTRACE ((" HPDF_TTFontDef_ParseMaxp\n"));
 
     if (!tbl)
-        return HPDF_SetError (fontdef->error, HPDF_TTF_MISSING_TABLE, 10);
+		return SET_ERROR(fontdef->error, HPDF_TTF_MISSING_TABLE, 10);
 
     ret = HPDF_Stream_Seek (attr->stream, tbl->offset, HPDF_SEEK_SET);
     if (ret != HPDF_OK)
@@ -1598,9 +1597,8 @@ ParseName  (HPDF_FontDef  fontdef)
         name_rec++;
     }
 
-    if ((!offset_id1 && !offset_id1u) ||
-            (!offset_id2 && !offset_id2u))
-        return HPDF_SetError (fontdef->error, HPDF_TTF_INVALID_FOMAT, 0);
+    if ((!offset_id1 && !offset_id1u) || (!offset_id2 && !offset_id2u))
+		return SET_ERROR(fontdef->error, HPDF_TTF_INVALID_FOMAT, 0);
 
     if (len_id1 == 0 && len_id1u > 0)
         len_id1 = len_id1u / 2 + len_id1u % 2;
@@ -1609,7 +1607,7 @@ ParseName  (HPDF_FontDef  fontdef)
         len_id2 = len_id2u / 2 + len_id2u % 2;
 
     if (len_id1 + len_id2 + 8 > 127)
-        return HPDF_SetError (fontdef->error, HPDF_TTF_INVALID_FOMAT, 0);
+		return SET_ERROR(fontdef->error, HPDF_TTF_INVALID_FOMAT, 0);
 
     HPDF_MemSet (attr->base_font, 0, HPDF_LIMIT_MAX_NAME_LEN + 1);
 
@@ -1691,7 +1689,7 @@ ParseOS2  (HPDF_FontDef  fontdef)
     HPDF_PTRACE ((" ParseOS2\n"));
 
     if (!tbl)
-        return HPDF_SetError (fontdef->error, HPDF_TTF_MISSING_TABLE, 0);
+		return SET_ERROR(fontdef->error, HPDF_TTF_MISSING_TABLE, 0);
 
     /* get the number version. */
     ret = HPDF_Stream_Seek (attr->stream, tbl->offset, HPDF_SEEK_SET);
@@ -1709,9 +1707,8 @@ ParseOS2  (HPDF_FontDef  fontdef)
     if ((ret = GetUINT16 (attr->stream, &attr->fs_type)) != HPDF_OK)
         return ret;
 
-    if (attr->fs_type  & (0x0002 | 0x0100 | 0x0200) && attr->embedding)
-        return HPDF_SetError (fontdef->error, HPDF_TTF_CANNOT_EMBEDDING_FONT,
-                0);
+    if (attr->fs_type & (0x0002 | 0x0100 | 0x0200) && attr->embedding)
+		return SET_ERROR(fontdef->error, HPDF_TTF_CANNOT_EMBEDDING_FONT, 0);
 
     /* get fields sfamilyclass and panose. */
     if ((ret = HPDF_Stream_Seek (attr->stream, tbl->offset + 30, HPDF_SEEK_SET))
@@ -2044,7 +2041,7 @@ HPDF_TTFontDef_SaveFontData  (HPDF_FontDef   fontdef,
 	}
 
         if (!tbl) {
-            ret = HPDF_SetError (fontdef->error, HPDF_TTF_MISSING_TABLE, i);
+			ret = SET_ERROR(fontdef->error, HPDF_TTF_MISSING_TABLE, i);
             goto Exit;
         }
 

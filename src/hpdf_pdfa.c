@@ -129,7 +129,7 @@ HPDF_STATUS ConvertDateToXMDate(HPDF_Stream stream, const char *pDate)
             return ret;
         return ret;
     }
-    return HPDF_SetError (stream->error, HPDF_INVALID_PARAMETER, 0);
+	return SET_ERROR(stream->error, HPDF_INVALID_PARAMETER, 0);
 }
 
 /* Write XMP Metadata for PDF/A */

@@ -4473,7 +4473,7 @@ HPDF_Base14FontDef_New  (HPDF_MMgr        mmgr,
     data = HPDF_Base14FontDef_FindBuiltinData (font_name);
 
     if (!data->font_name) {
-        HPDF_SetError (mmgr->error, HPDF_INVALID_FONT_NAME, 0);
+		SET_ERROR(mmgr->error, HPDF_INVALID_FONT_NAME, 0);
         HPDF_FontDef_Free (fontdef);
         return NULL;
     }

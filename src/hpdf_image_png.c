@@ -81,26 +81,10 @@ PngAfterWrite  (HPDF_Dict obj);
 /*---------------------------------------------------------------------------*/
 
 static void
-PngErrorFunc  (png_structp       png_ptr,
-               const char  *msg)
+PngErrorFunc(png_structp png_ptr, const char* msg)
 {
-    char error_number[16];
-    HPDF_UINT i;
-    HPDF_STATUS detail_no;
-    HPDF_Error error;
-
-    /* pick out error-number from error message */
-    HPDF_MemSet (error_number, 0, 16);
-
-     for (i = 0; i < 15; i++) {
-         error_number[i] = *(msg + i);
-         if (*(msg + i + 1) == ' ')
-             break;
-     }
-
-     error = (HPDF_Error)png_get_error_ptr (png_ptr);
-     detail_no = (HPDF_STATUS)HPDF_AToI (error_number);
-     HPDF_SetError (error, HPDF_LIBPNG_ERROR, detail_no);
+	HPDF_Error error = (HPDF_Error)png_get_error_ptr(png_ptr);
+	TEXT_ERROR(error, HPDF_LIBPNG_ERROR, 0, msg);
 }
 
 
@@ -336,10 +320,8 @@ CreatePallet (HPDF_Dict    image,
     /* png_get_PLTE does not call PngErrorFunc even if it failed.
      * so we call HPDF_Set_Error to set error-code.
      */
-    if (png_get_PLTE(png_ptr, info_ptr, (png_color**)&src_pl, &num_pl) !=
-            PNG_INFO_PLTE)
-        return HPDF_SetError (image->error, HPDF_LIBPNG_ERROR,
-                    HPDF_CANNOT_GET_PALLET);
+	if (png_get_PLTE(png_ptr, info_ptr, (png_color**)&src_pl, &num_pl) != PNG_INFO_PLTE)
+		return SET_ERROR(image->error, HPDF_LIBPNG_ERROR, HPDF_CANNOT_GET_PALLET);
 
 
     /* make a pallet array for indexed image. */
@@ -391,11 +373,11 @@ HPDF_Image_LoadPngImage  (HPDF_MMgr        mmgr,
 
     HPDF_MemSet (header, 0x00, HPDF_PNG_BYTES_TO_CHECK);
     ret = HPDF_Stream_Read (png_data, header, &len);
-    if (ret != HPDF_OK ||
-            png_sig_cmp (header, (png_size_t)0, HPDF_PNG_BYTES_TO_CHECK)) {
-        HPDF_SetError (mmgr->error, HPDF_INVALID_PNG_IMAGE, 0);
-        return NULL;
-    }
+	if (ret != HPDF_OK || png_sig_cmp(header, (png_size_t)0, HPDF_PNG_BYTES_TO_CHECK))
+	{
+		SET_ERROR(mmgr->error, HPDF_INVALID_PNG_IMAGE, 0);
+		return NULL;
+	}
 
     image = HPDF_DictStream_New (mmgr, xref);
     if (!image)
@@ -430,11 +412,10 @@ LoadPngData  (HPDF_Dict     image,
 	HPDF_PTRACE ((" HPDF_Image_LoadPngImage\n"));
 
 	/* create read_struct. */
-	png_ptr = png_create_read_struct (PNG_LIBPNG_VER_STRING,
-			image->error, PngErrorFunc, PngErrorFunc);
+	png_ptr = png_create_read_struct (PNG_LIBPNG_VER_STRING, image->error, PngErrorFunc, NULL);
 
 	if (png_ptr == NULL) {
-		HPDF_SetError (image->error, HPDF_FAILD_TO_ALLOC_MEM, 0);
+		SET_ERROR(image->error, HPDF_FAILD_TO_ALLOC_MEM, 0);
 		return HPDF_FAILD_TO_ALLOC_MEM;
 	}
 
@@ -442,7 +423,7 @@ LoadPngData  (HPDF_Dict     image,
 	info_ptr = png_create_info_struct (png_ptr);
 
 	if (info_ptr == NULL) {
-		HPDF_SetError (image->error, HPDF_FAILD_TO_ALLOC_MEM, 0);
+		SET_ERROR(image->error, HPDF_FAILD_TO_ALLOC_MEM, 0);
 		goto Exit;
 	}
 
@@ -546,10 +527,10 @@ no_transparent_color_in_palette:
 			ret = HPDF_FAILD_TO_ALLOC_MEM;
 			goto Exit;
 		}
-		
+
 		smask->filter = image->filter;
 		smask->header.obj_class |= HPDF_OSUBCLASS_XOBJECT;
-		
+
 		ret = HPDF_Dict_AddName (smask, "Type", "XObject");
 		ret += HPDF_Dict_AddName (smask, "Subtype", "Image");
 		ret += HPDF_Dict_AddNumber (smask, "Width", (HPDF_UINT)width);
@@ -672,7 +653,7 @@ PngBeforeWrite  (HPDF_Dict obj)
 
     s = HPDF_Dict_GetItem (obj, "_FILE_NAME", HPDF_OCLASS_STRING);
     if (!s)
-        return HPDF_SetError (obj->error, HPDF_MISSING_FILE_NAME_ENTRY, 0);
+		return SET_ERROR(obj->error, HPDF_MISSING_FILE_NAME_ENTRY, 0);
 
     png_data = HPDF_FileReader_New (obj->mmgr, (const char *)(s->value));
     if (!HPDF_Stream_Validate (png_data))
@@ -680,11 +661,11 @@ PngBeforeWrite  (HPDF_Dict obj)
 
     HPDF_MemSet (header, 0x00, HPDF_PNG_BYTES_TO_CHECK);
     ret = HPDF_Stream_Read (png_data, header, &len);
-    if (ret != HPDF_OK ||
-            png_sig_cmp (header, (png_size_t)0, HPDF_PNG_BYTES_TO_CHECK)) {
-        HPDF_Stream_Free(png_data);
-        return HPDF_SetError (obj->error, HPDF_INVALID_PNG_IMAGE, 0);
-    }
+	if (ret != HPDF_OK || png_sig_cmp(header, (png_size_t)0, HPDF_PNG_BYTES_TO_CHECK))
+	{
+		HPDF_Stream_Free(png_data);
+		return SET_ERROR(obj->error, HPDF_INVALID_PNG_IMAGE, 0);
+	}
 
     if ((ret = LoadPngData (obj, NULL, png_data, HPDF_FALSE)) != HPDF_OK) {
         HPDF_Stream_Free(png_data);

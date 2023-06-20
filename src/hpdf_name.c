@@ -51,24 +51,22 @@ HPDF_Name_Write  (HPDF_Name    obj,
 
 
 HPDF_STATUS
-HPDF_Name_SetValue  (HPDF_Name        obj,
-                     const char  *value)
+HPDF_Name_SetValue(HPDF_Name obj, const char* value)
 {
-    if (!value || value[0] == 0)
-        return HPDF_SetError (obj->error, HPDF_NAME_INVALID_VALUE, 0);
+	if (!value || value[0] == 0)
+		return SET_ERROR(obj->error, HPDF_NAME_INVALID_VALUE, 0);
 
-    if (HPDF_StrLen (value, HPDF_LIMIT_MAX_NAME_LEN + 1) >
-            HPDF_LIMIT_MAX_NAME_LEN)
-        return HPDF_SetError (obj->error, HPDF_NAME_OUT_OF_RANGE, 0);
+	if (HPDF_StrLen(value, HPDF_LIMIT_MAX_NAME_LEN + 1) > HPDF_LIMIT_MAX_NAME_LEN)
+		return SET_ERROR(obj->error, HPDF_NAME_OUT_OF_RANGE, 0);
 
-    HPDF_StrCpy (obj->value, value, obj->value + HPDF_LIMIT_MAX_NAME_LEN);
+	HPDF_StrCpy(obj->value, value, obj->value + HPDF_LIMIT_MAX_NAME_LEN);
 
-    return HPDF_OK;
+	return HPDF_OK;
 }
 
 const char*
-HPDF_Name_GetValue (HPDF_Name  obj)
+HPDF_Name_GetValue(HPDF_Name obj)
 {
-    return (const char *)obj->value;
+	return (const char*)obj->value;
 }
 

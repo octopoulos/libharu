@@ -46,7 +46,7 @@ HPDF_LoadPngImageFromMem  (HPDF_Doc     pdf,
 	imagedata = HPDF_MemStream_New (pdf->mmgr, size);
 
 	if (!HPDF_Stream_Validate (imagedata)) {
-		HPDF_RaiseError (&pdf->error, HPDF_INVALID_STREAM, 0);
+		RAISE_ERROR(&pdf->error, HPDF_INVALID_STREAM, 0);
 		return NULL;
 	}
 
@@ -179,7 +179,7 @@ LoadPngImageFromStream (HPDF_Doc      pdf,
                         HPDF_Stream   imagedata,
                         HPDF_BOOL     delayed_loading)
 {
-    HPDF_SetError (&pdf->error, HPDF_UNSUPPORTED_FUNC, 0);
+	SET_ERROR(&pdf->error, HPDF_UNSUPPORTED_FUNC, 0);
     HPDF_UNUSED (delayed_loading);
     HPDF_UNUSED (imagedata);
 

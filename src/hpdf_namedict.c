@@ -71,11 +71,11 @@ HPDF_NameDict_Validate  (HPDF_NameDict  namedict)
     if (!namedict)
         return HPDF_FALSE;
 
-    if (namedict->header.obj_class != (HPDF_OSUBCLASS_NAMEDICT |
-                HPDF_OCLASS_DICT)) {
-        HPDF_SetError (namedict->error, HPDF_INVALID_OBJECT, 0);
-        return HPDF_FALSE;
-    }
+    if (namedict->header.obj_class != (HPDF_OSUBCLASS_NAMEDICT | HPDF_OCLASS_DICT))
+	{
+		SET_ERROR(namedict->error, HPDF_INVALID_OBJECT, 0);
+		return HPDF_FALSE;
+	}
 
     return HPDF_TRUE;
 }
@@ -156,11 +156,11 @@ HPDF_NameTree_Validate  (HPDF_NameTree  nametree)
     if (!nametree)
         return HPDF_FALSE;
 
-    if (nametree->header.obj_class != (HPDF_OSUBCLASS_NAMETREE |
-                HPDF_OCLASS_DICT)) {
-        HPDF_SetError (nametree->error, HPDF_INVALID_OBJECT, 0);
-        return HPDF_FALSE;
-    }
+    if (nametree->header.obj_class != (HPDF_OSUBCLASS_NAMETREE | HPDF_OCLASS_DICT))
+	{
+		SET_ERROR(nametree->error, HPDF_INVALID_OBJECT, 0);
+		return HPDF_FALSE;
+	}
 
     return HPDF_TRUE;
 }

@@ -21,6 +21,8 @@
 #include "hpdf_consts.h"
 #include "hpdf.h"
 
+#include <string.h>
+
 #ifndef HPDF_STDCALL
 #ifdef HPDF_DLL_MAKE
 #define HPDF_STDCALL __stdcall
@@ -70,19 +72,19 @@ HPDF_CopyError  (HPDF_Error  dst,
 }
 
 HPDF_STATUS
-HPDF_SetError  (HPDF_Error   error,
-                HPDF_STATUS  error_no,
-                HPDF_STATUS  detail_no)
+HPDF_SetError(HPDF_Error error, HPDF_STATUS error_no, HPDF_STATUS detail_no, const char* text, const char* fileName, int lineNo)
 {
     HPDF_PTRACE((" HPDF_SetError: error_no=0x%04X "
             "detail_no=0x%04X\n", (HPDF_UINT)error_no, (HPDF_UINT)detail_no));
 
-    error->error_no = error_no;
-    error->detail_no = detail_no;
+    error->error_no  = error_no;
+	error->detail_no = detail_no;
+    strcpy(error->text, text);
+    strcpy(error->fileName, fileName);
+	error->lineNo = lineNo;
 
     return error_no;
 }
-
 
 HPDF_EXPORT(HPDF_STATUS)
 HPDF_CheckError  (HPDF_Error   error)
@@ -91,28 +93,22 @@ HPDF_CheckError  (HPDF_Error   error)
                 (HPDF_UINT)error->error_no, (HPDF_UINT)error->detail_no));
 
     if (error->error_no != HPDF_OK && error->error_fn)
-        error->error_fn (error->error_no, error->detail_no, error->user_data);
+		error->error_fn(error->error_no, error->detail_no, error->text, error->fileName, error->lineNo, error->user_data);
 
     return error->error_no;
 }
 
 
 HPDF_STATUS
-HPDF_RaiseError  (HPDF_Error   error,
-                  HPDF_STATUS  error_no,
-                  HPDF_STATUS  detail_no)
+HPDF_RaiseError(HPDF_Error error, HPDF_STATUS error_no, HPDF_STATUS detail_no, const char* text, const char* fileName, int lineNo)
 {
-    HPDF_SetError (error, error_no, detail_no);
-
-    return HPDF_CheckError (error);
+	HPDF_SetError(error, error_no, detail_no, text, fileName, lineNo);
+	return HPDF_CheckError(error);
 }
 
-
-void
-HPDF_Error_Reset (HPDF_Error error)
+void HPDF_Error_Reset(HPDF_Error error)
 {
-    error->error_no = HPDF_NOERROR;
-    error->detail_no = HPDF_NOERROR;
+	error->error_no  = HPDF_NOERROR;
+	error->detail_no = HPDF_NOERROR;
+    *error->text = 0;
 }
-
-

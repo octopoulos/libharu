@@ -66,7 +66,9 @@ typedef struct _HPDF_PageAttr_Rec {
     HPDF_Stream        stream;
     HPDF_Xref          xref;
     HPDF_UINT          compression_mode;
-	HPDF_PDFVer       *ver; 
+	HPDF_PDFVer       *ver;
+	HPDF_INT           simulate; // &1: simulate text, &2: simulate graphics
+	void*              userData; //
 } HPDF_PageAttr_Rec;
 
 

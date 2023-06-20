@@ -54,8 +54,7 @@ HPDF_PageLabel_New  (HPDF_Doc             pdf,
                 goto Fail;
             break;
         default:
-            HPDF_SetError (&pdf->error, HPDF_PAGE_NUM_STYLE_OUT_OF_RANGE,
-                    (HPDF_STATUS)style);
+		    SET_ERROR(&pdf->error, HPDF_PAGE_NUM_STYLE_OUT_OF_RANGE, (HPDF_STATUS)style);
             goto Fail;
     }
 

@@ -69,12 +69,12 @@ HPDF_Type1Font_New  (HPDF_MMgr        mmgr,
 
     /* check whether the fontdef object and the encoder object is valid. */
     if (encoder->type != HPDF_ENCODER_TYPE_SINGLE_BYTE) {
-        HPDF_SetError(mmgr->error, HPDF_INVALID_ENCODER_TYPE, 0);
+		SET_ERROR(mmgr->error, HPDF_INVALID_ENCODER_TYPE, 0);
         return NULL;
     }
 
     if (fontdef->type != HPDF_FONTDEF_TYPE_TYPE1) {
-        HPDF_SetError(mmgr->error, HPDF_INVALID_FONTDEF_TYPE, 0);
+		SET_ERROR(mmgr->error, HPDF_INVALID_FONTDEF_TYPE, 0);
         return NULL;
     }
 
@@ -248,7 +248,7 @@ Type1Font_TextWidth  (HPDF_Font        font,
             }
         }
     } else
-        HPDF_SetError (font->error, HPDF_FONT_INVALID_WIDTHS_TABLE, 0);
+		SET_ERROR(font->error, HPDF_FONT_INVALID_WIDTHS_TABLE, 0);
 
     /* 2006.08.19 add. */
     if (HPDF_IS_WHITE_SPACE(b))

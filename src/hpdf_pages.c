@@ -135,14 +135,14 @@ HPDF_Pages_AddKids  (HPDF_Pages  parent,
     HPDF_PTRACE((" HPDF_Pages_AddKids\n"));
 
     if (HPDF_Dict_GetItem (kid, "Parent", HPDF_OCLASS_DICT))
-        return HPDF_SetError (parent->error, HPDF_PAGE_CANNOT_SET_PARENT, 0);
+		return SET_ERROR(parent->error, HPDF_PAGE_CANNOT_SET_PARENT, 0);
 
     if ((ret = HPDF_Dict_Add (kid, "Parent", parent)) != HPDF_OK)
         return ret;
 
     kids = (HPDF_Array )HPDF_Dict_GetItem (parent, "Kids", HPDF_OCLASS_ARRAY);
     if (!kids)
-        return HPDF_SetError (parent->error, HPDF_PAGES_MISSING_KIDS_ENTRY, 0);
+		return SET_ERROR(parent->error, HPDF_PAGES_MISSING_KIDS_ENTRY, 0);
 
     if (kid->header.obj_class == (HPDF_OCLASS_DICT | HPDF_OSUBCLASS_PAGE)) {
         HPDF_PageAttr attr = (HPDF_PageAttr)kid->attr;
@@ -175,14 +175,14 @@ HPDF_Page_InsertBefore  (HPDF_Page   page,
         return HPDF_PAGE_CANNOT_SET_PARENT;
 
     if (HPDF_Dict_GetItem (page, "Parent", HPDF_OCLASS_DICT))
-        return HPDF_SetError (parent->error, HPDF_PAGE_CANNOT_SET_PARENT, 0);
+		return SET_ERROR(parent->error, HPDF_PAGE_CANNOT_SET_PARENT, 0);
 
     if ((ret = HPDF_Dict_Add (page, "Parent", parent)) != HPDF_OK)
         return ret;
 
     kids = (HPDF_Array )HPDF_Dict_GetItem (parent, "Kids", HPDF_OCLASS_ARRAY);
     if (!kids)
-        return HPDF_SetError (parent->error, HPDF_PAGES_MISSING_KIDS_ENTRY, 0);
+		return SET_ERROR(parent->error, HPDF_PAGES_MISSING_KIDS_ENTRY, 0);
 
     attr = (HPDF_PageAttr)page->attr;
     attr->parent = parent;
@@ -203,7 +203,7 @@ Pages_BeforeWrite  (HPDF_Dict    obj)
     HPDF_PTRACE((" HPDF_Pages_BeforeWrite\n"));
 
     if (!kids)
-        return HPDF_SetError (obj->error, HPDF_PAGES_MISSING_KIDS_ENTRY, 0);
+		return SET_ERROR(obj->error, HPDF_PAGES_MISSING_KIDS_ENTRY, 0);
 
     if (count)
         count->value = GetPageCount (obj);
@@ -393,7 +393,7 @@ HPDF_Page_CheckState  (HPDF_Page  page,
         return HPDF_INVALID_PAGE;
 
     if (!(((HPDF_PageAttr)page->attr)->gmode & mode))
-        return HPDF_RaiseError (page->error, HPDF_PAGE_INVALID_GMODE, 0);
+		return RAISE_ERROR(page->error, HPDF_PAGE_INVALID_GMODE, 0);
 
     return HPDF_OK;
 }
@@ -421,7 +421,7 @@ HPDF_Page_GetInheritableItem  (HPDF_Page          page,
 
     /* the key is not inheritable */
     if (chk != HPDF_TRUE) {
-        HPDF_SetError (page->error, HPDF_INVALID_PARAMETER, 0);
+		SET_ERROR(page->error, HPDF_INVALID_PARAMETER, 0);
         return NULL;
     }
 
@@ -571,7 +571,8 @@ HPDF_Page_GetMediaBox  (HPDF_Page   page)
                 media_box.top = r->value;
 
             HPDF_CheckError (page->error);
-        } else HPDF_RaiseError (page->error, HPDF_PAGE_CANNOT_FIND_OBJECT, 0);
+		}
+		else RAISE_ERROR(page->error, HPDF_PAGE_CANNOT_FIND_OBJECT, 0);
     }
 
     return media_box;
@@ -1023,7 +1024,7 @@ HPDF_Page_TextWidth  (HPDF_Page        page,
 
     /* no font exists */
     if (!attr->gstate->font) {
-        HPDF_RaiseError (page->error, HPDF_PAGE_FONT_NOT_FOUND, 0);
+		RAISE_ERROR(page->error, HPDF_PAGE_FONT_NOT_FOUND, 0);
         return 0;
     }
 
@@ -1059,7 +1060,7 @@ HPDF_Page_MeasureText  (HPDF_Page          page,
 
     /* no font exists */
     if (!attr->gstate->font) {
-        HPDF_RaiseError (page->error, HPDF_PAGE_FONT_NOT_FOUND, 0);
+		RAISE_ERROR(page->error, HPDF_PAGE_FONT_NOT_FOUND, 0);
         return 0;
     }
 
@@ -1189,7 +1190,7 @@ HPDF_Page_GetMiterLimit  (HPDF_Page   page)
 HPDF_EXPORT(HPDF_DashMode)
 HPDF_Page_GetDash  (HPDF_Page   page)
 {
-    HPDF_DashMode mode = {{0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, 0.0f, 0.0f};
+    HPDF_DashMode mode = {{0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, 0, 0.0f};
 
     HPDF_PTRACE((" HPDF_Page_GetDash\n"));
 
@@ -1441,6 +1442,33 @@ HPDF_Page_GetTextMatrix  (HPDF_Page   page)
 }
 
 
+HPDF_EXPORT(HPDF_INT)
+HPDF_Page_Simulate(HPDF_Page page, HPDF_INT simulate)
+{
+	if (HPDF_Page_Validate(page))
+	{
+		HPDF_PageAttr attr = (HPDF_PageAttr)page->attr;
+		if (simulate >= 0) attr->simulate = simulate;
+		return attr->simulate;
+	}
+	else
+		return 0;
+}
+
+HPDF_EXPORT(void*)
+HPDF_Page_UserData(HPDF_Page page, void* userData)
+{
+	if (HPDF_Page_Validate(page))
+	{
+		HPDF_PageAttr attr = (HPDF_PageAttr)page->attr;
+		if (userData) attr->userData = userData;
+		return attr->userData;
+	}
+	else
+		return NULL;
+}
+
+
 HPDF_EXPORT(HPDF_UINT)
 HPDF_Page_GetGStateDepth  (HPDF_Page    page)
 {
@@ -1559,11 +1587,11 @@ HPDF_Page_SetBoxValue (HPDF_Page          page,
 
     array = HPDF_Page_GetInheritableItem (page, name, HPDF_OCLASS_ARRAY);
     if (!array)
-        return HPDF_SetError (page->error, HPDF_PAGE_CANNOT_FIND_OBJECT, 0);
+		return SET_ERROR(page->error, HPDF_PAGE_CANNOT_FIND_OBJECT, 0);
 
     r = HPDF_Array_GetItem (array, index, HPDF_OCLASS_REAL);
     if (!r)
-        return HPDF_SetError (page->error, HPDF_PAGE_INVALID_INDEX, 0);
+		return SET_ERROR(page->error, HPDF_PAGE_INVALID_INDEX, 0);
 
     r->value = value;
 
@@ -1583,8 +1611,7 @@ HPDF_Page_SetRotate (HPDF_Page      page,
         return HPDF_INVALID_PAGE;
 
     if (angle % 90 != 0)
-        return HPDF_RaiseError (page->error, HPDF_PAGE_INVALID_ROTATE_VALUE,
-                (HPDF_STATUS)angle);
+		return RAISE_ERROR(page->error, HPDF_PAGE_INVALID_ROTATE_VALUE, (HPDF_STATUS)angle);
 
     n = HPDF_Page_GetInheritableItem (page, "Rotate", HPDF_OCLASS_NUMBER);
 
@@ -1609,7 +1636,7 @@ HPDF_Page_SetZoom  (HPDF_Page   page,
     }
 
     if (zoom < 0.08 || zoom > 32) {
-        return HPDF_RaiseError (page->error, HPDF_INVALID_PARAMETER, 0);
+		return RAISE_ERROR(page->error, HPDF_INVALID_PARAMETER, 0);
     }
 
     ret = HPDF_Dict_AddReal (page, "PZ", zoom);
@@ -1623,7 +1650,7 @@ HPDF_Page_SetWidth  (HPDF_Page    page,
     HPDF_PTRACE((" HPDF_Page_SetWidth\n"));
 
     if (value < 3 || value > 14400)
-        return HPDF_RaiseError (page->error, HPDF_PAGE_INVALID_SIZE, 0);
+		return RAISE_ERROR(page->error, HPDF_PAGE_INVALID_SIZE, 0);
 
     if (HPDF_Page_SetBoxValue (page, "MediaBox", 2, value) != HPDF_OK)
         return HPDF_CheckError (page->error);
@@ -1639,7 +1666,7 @@ HPDF_Page_SetHeight  (HPDF_Page    page,
     HPDF_PTRACE((" HPDF_Page_SetWidth\n"));
 
     if (value < 3 || value > 14400)
-        return HPDF_RaiseError (page->error, HPDF_PAGE_INVALID_SIZE, 0);
+		return RAISE_ERROR(page->error, HPDF_PAGE_INVALID_SIZE, 0);
 
     if (HPDF_Page_SetBoxValue (page, "MediaBox", 3, value) != HPDF_OK)
         return HPDF_CheckError (page->error);
@@ -1661,8 +1688,7 @@ HPDF_Page_SetSize  (HPDF_Page             page,
         return HPDF_INVALID_PAGE;
 
     if (size < 0 || size > HPDF_PAGE_SIZE_EOF)
-        return HPDF_RaiseError (page->error, HPDF_PAGE_INVALID_SIZE,
-                (HPDF_STATUS)direction);
+		return RAISE_ERROR(page->error, HPDF_PAGE_INVALID_SIZE, (HPDF_STATUS)direction);
 
     if (direction == HPDF_PAGE_LANDSCAPE) {
         ret += HPDF_Page_SetHeight (page,
@@ -1675,8 +1701,7 @@ HPDF_Page_SetSize  (HPDF_Page             page,
         ret += HPDF_Page_SetWidth (page,
             HPDF_PREDEFINED_PAGE_SIZES[(HPDF_UINT)size].x);
     } else
-        ret = HPDF_SetError (page->error, HPDF_PAGE_INVALID_DIRECTION,
-                (HPDF_STATUS)direction);
+		ret = SET_ERROR(page->error, HPDF_PAGE_INVALID_DIRECTION, (HPDF_STATUS)direction);
 
     if (ret != HPDF_OK)
         return HPDF_CheckError (page->error);
@@ -1770,7 +1795,7 @@ HPDF_Page_CreateTextAnnot  (HPDF_Page          page,
     attr = (HPDF_PageAttr)page->attr;
 
     if (encoder && !HPDF_Encoder_Validate (encoder)) {
-        HPDF_RaiseError (page->error, HPDF_INVALID_ENCODER, 0);
+		RAISE_ERROR(page->error, HPDF_INVALID_ENCODER, 0);
         return NULL;
     }
 
@@ -1803,7 +1828,7 @@ HPDF_Page_CreateFreeTextAnnot  (HPDF_Page          page,
     attr = (HPDF_PageAttr)page->attr;
 
     if (encoder && !HPDF_Encoder_Validate (encoder)) {
-        HPDF_RaiseError (page->error, HPDF_INVALID_ENCODER, 0);
+		RAISE_ERROR(page->error, HPDF_INVALID_ENCODER, 0);
         return NULL;
     }
 
@@ -1836,7 +1861,7 @@ HPDF_Page_CreateLineAnnot  (HPDF_Page          page,
     attr = (HPDF_PageAttr)page->attr;
 
     if (encoder && !HPDF_Encoder_Validate (encoder)) {
-        HPDF_RaiseError (page->error, HPDF_INVALID_ENCODER, 0);
+		RAISE_ERROR(page->error, HPDF_INVALID_ENCODER, 0);
         return NULL;
     }
 
@@ -1963,7 +1988,7 @@ HPDF_Page_CreateLinkAnnot  (HPDF_Page          page,
 
     if (dst) {
     if (!HPDF_Destination_Validate (dst)) {
-        HPDF_RaiseError (page->error, HPDF_INVALID_DESTINATION, 0);
+		RAISE_ERROR(page->error, HPDF_INVALID_DESTINATION, 0);
         return NULL;
     }
     }
@@ -1997,7 +2022,7 @@ HPDF_Page_CreateURILinkAnnot  (HPDF_Page          page,
     attr = (HPDF_PageAttr)page->attr;
 
     if (HPDF_StrLen (uri, HPDF_LIMIT_MAX_STRING_LEN) <= 0) {
-        HPDF_RaiseError (page->error, HPDF_INVALID_URI, 0);
+		RAISE_ERROR(page->error, HPDF_INVALID_URI, 0);
         return NULL;
     }
 
@@ -2030,7 +2055,7 @@ HPDF_Page_CreateCircleAnnot (HPDF_Page          page,
     attr = (HPDF_PageAttr)page->attr;
 
     if (encoder && !HPDF_Encoder_Validate (encoder)) {
-        HPDF_RaiseError (page->error, HPDF_INVALID_ENCODER, 0);
+		RAISE_ERROR(page->error, HPDF_INVALID_ENCODER, 0);
         return NULL;
     }
 
@@ -2063,7 +2088,7 @@ HPDF_Page_CreateSquareAnnot (HPDF_Page          page,
     attr = (HPDF_PageAttr)page->attr;
 
     if (encoder && !HPDF_Encoder_Validate (encoder)) {
-        HPDF_RaiseError (page->error, HPDF_INVALID_ENCODER, 0);
+		RAISE_ERROR(page->error, HPDF_INVALID_ENCODER, 0);
         return NULL;
     }
 
@@ -2121,7 +2146,7 @@ HPDF_Page_CreateTextMarkupAnnot (HPDF_Page     page,
     attr = (HPDF_PageAttr)page->attr;
 
     if (encoder && !HPDF_Encoder_Validate (encoder)) {
-        HPDF_RaiseError (page->error, HPDF_INVALID_ENCODER, 0);
+		RAISE_ERROR(page->error, HPDF_INVALID_ENCODER, 0);
         return NULL;
     }
 

@@ -110,7 +110,7 @@ HPDF_Shading_New  (HPDF_Doc         pdf,
       break;
 
     default:
-      HPDF_SetError (pdf->mmgr->error, HPDF_INVALID_SHADING_TYPE, 0);
+		SET_ERROR(pdf->mmgr->error, HPDF_INVALID_SHADING_TYPE, 0);
       return NULL;
   }
 
@@ -138,7 +138,7 @@ HPDF_Shading_New  (HPDF_Doc         pdf,
       break;
 
     default:
-      HPDF_SetError(pdf->mmgr->error, HPDF_INVALID_COLOR_SPACE, 0);
+		SET_ERROR(pdf->mmgr->error, HPDF_INVALID_COLOR_SPACE, 0);
       return NULL;
   }
 
@@ -165,7 +165,7 @@ HPDF_Shading_New  (HPDF_Doc         pdf,
       break;
 
     default:
-      HPDF_SetError (pdf->mmgr->error, HPDF_INVALID_SHADING_TYPE, 0);
+		SET_ERROR(pdf->mmgr->error, HPDF_INVALID_SHADING_TYPE, 0);
       return NULL;
   }
 
@@ -193,7 +193,7 @@ HPDF_Shading_AddVertexRGB(HPDF_Shading shading,
   }
 
   if (_GetDecodeArrayVertexValues(shading, bbox) != HPDF_TRUE) {
-    return HPDF_SetError(shading->error, HPDF_INVALID_OBJECT, 0);
+	  return SET_ERROR(shading->error, HPDF_INVALID_OBJECT, 0);
   }
 
   vert.EdgeFlag = (HPDF_UINT8)edgeFlag;
