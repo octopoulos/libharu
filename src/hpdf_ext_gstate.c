@@ -54,7 +54,6 @@ ExtGState_Check  (HPDF_ExtGState  ext_gstate)
 {
     if (!HPDF_ExtGState_Validate (ext_gstate))
         return HPDF_INVALID_OBJECT;
-
     if (ext_gstate->header.obj_class == (HPDF_OSUBCLASS_EXT_GSTATE_R | HPDF_OCLASS_DICT))
 		return RAISE_ERROR(ext_gstate->error, HPDF_EXT_GSTATE_READ_ONLY, 0);
 

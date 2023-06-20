@@ -87,6 +87,30 @@ PngErrorFunc(png_structp png_ptr, const char* msg)
 	TEXT_ERROR(error, HPDF_LIBPNG_ERROR, 0, msg);
 }
 
+static void
+PngWarnFunc(png_structp png_ptr, const char* msg)
+{
+	//char        error_number[16];
+	//HPDF_UINT   i;
+	//HPDF_STATUS detail_no;
+	//HPDF_Error  error;
+
+	///* pick out error-number from error message */
+	//HPDF_MemSet(error_number, 0, 16);
+
+	//for (i = 0; i < 15; i++)
+	//{
+	//	error_number[i] = *(msg + i);
+	//	if (*(msg + i + 1) == ' ')
+	//		break;
+	//}
+
+	//error     = (HPDF_Error)png_get_error_ptr(png_ptr);
+	//detail_no = (HPDF_STATUS)HPDF_AToI(error_number);
+	//// SET_ERROR(error, HPDF_LIBPNG_ERROR, detail_no);
+
+	//HPDF_SetError(error, HPDF_LIBPNG_ERROR, detail_no, msg, __LINE__);
+}
 
 static HPDF_STATUS
 ReadPngData_Interlaced  (HPDF_Dict    image,
