@@ -1,0 +1,12 @@
+cp mac/src/libhpdf.a /Users/truedata/Code/vcpkg/installed/x64-osx/lib/
+cp mac/src/libhpdf.a /Users/truedata/Code/vcpkg/packages/libharu_x64-osx/lib/
+cp mac-debug/src/libhpdf.a /Users/truedata/Code/vcpkg/installed/x64-osx/debug/lib/
+cp mac-debug/src/libhpdf.a /Users/truedata/Code/vcpkg/packages/libharu_x64-osx/debug/lib/
+cp include/hpdf.h /Users/truedata/Code/vcpkg/installed/x64-osx/include/
+cp include/hpdf.h /Users/truedata/Code/vcpkg/packages/libharu_x64-osx/include/
+cp include/hpdf_pages.h /Users/truedata/Code/vcpkg/installed/x64-osx/include/
+cp include/hpdf_pages.h /Users/truedata/Code/vcpkg/packages/libharu_x64-osx/include/
+cp include/hpdf_types.h /Users/truedata/Code/vcpkg/installed/x64-osx/include/
+cp include/hpdf_types.h /Users/truedata/Code/vcpkg/packages/libharu_x64-osx/include/
+cp mac/include/hpdf_config.h /Users/truedata/Code/vcpkg/installed/x64-osx/include/
+cp mac/include/hpdf_config.h /Users/truedata/Code/vcpkg/packages/libharu_x64-osx/include/
