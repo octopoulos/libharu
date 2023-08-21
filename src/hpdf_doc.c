@@ -269,7 +269,7 @@ HPDF_NewDoc  (HPDF_Doc  pdf)
 
     pdf->cur_pages = pdf->root_pages;
 
-    ptr = (char *)HPDF_StrCpy (ptr, (const char *)"SharkIt PDF Library ", eptr);
+    ptr = (char *)HPDF_StrCpy (ptr, (const char *)"Shark-it PDF Library ", eptr);
     version = HPDF_GetVersion ();
     HPDF_StrCpy (ptr, version, eptr);
 

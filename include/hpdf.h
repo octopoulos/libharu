@@ -1367,8 +1367,7 @@ HPDF_Page_SetWordSpace  (HPDF_Page  page,
 
 /* Tz */
 HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_SetHorizontalScalling  (HPDF_Page  page,
-                                  HPDF_REAL  value);
+HPDF_Page_SetHorizontalScaling(HPDF_Page page, HPDF_REAL value);
 
 /* TL */
 HPDF_EXPORT(HPDF_STATUS)

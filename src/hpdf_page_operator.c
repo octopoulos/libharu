@@ -1133,14 +1133,13 @@ HPDF_Page_SetWordSpace  (HPDF_Page  page,
 
 /* Tz */
 HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_SetHorizontalScalling  (HPDF_Page  page,
-                                  HPDF_REAL  value)
+HPDF_Page_SetHorizontalScaling(HPDF_Page  page, HPDF_REAL  value)
 {
     HPDF_STATUS ret = HPDF_Page_CheckState (page, HPDF_GMODE_PAGE_DESCRIPTION |
                     HPDF_GMODE_TEXT_OBJECT);
     HPDF_PageAttr attr;
 
-    HPDF_PTRACE ((" HPDF_Page_SetHorizontalScalling\n"));
+    HPDF_PTRACE ((" HPDF_Page_SetHorizontalScaling\n"));
 
     if (ret != HPDF_OK)
         return ret;
@@ -2922,7 +2921,7 @@ HPDF_Page_New_Content_Stream  (HPDF_Page page,
 
     /* check if there is already an array of contents */
     contents_array = (HPDF_Array) HPDF_Dict_GetItem(page,"Contents", HPDF_OCLASS_ARRAY);
-    if (!contents_array) {	
+    if (!contents_array) {
         HPDF_Error_Reset (page->error);
         /* no contents_array already -- create one
            and replace current single contents item */
@@ -2943,7 +2942,7 @@ HPDF_Page_New_Content_Stream  (HPDF_Page page,
 
     ret += HPDF_Array_Add (contents_array,attr->contents);
 
-    /* return the value of the new stream, so that 
+    /* return the value of the new stream, so that
        the application can use it as a shared contents stream */
     if (ret == HPDF_OK && new_stream != NULL)
         *new_stream = attr->contents;
@@ -2971,7 +2970,7 @@ HPDF_Page_Insert_Shared_Content_Stream  (HPDF_Page page,
 
     /* check if there is already an array of contents */
     contents_array = (HPDF_Array) HPDF_Dict_GetItem(page,"Contents", HPDF_OCLASS_ARRAY);
-    if (!contents_array) {	
+    if (!contents_array) {
         HPDF_PageAttr attr;
         HPDF_Error_Reset (page->error);
         /* no contents_array already -- create one
