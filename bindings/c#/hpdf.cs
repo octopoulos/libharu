@@ -950,7 +950,7 @@ public class HPdfPage{
     private extern static float HPDF_Page_GetWordSpace(IntPtr page);
 
     [DllImport("libhpdf.dll")]
-    private extern static float HPDF_Page_GetHorizontalScalling(IntPtr page);
+    private extern static float HPDF_Page_GetHorizontalScaling(IntPtr page);
 
     [DllImport("libhpdf.dll")]
     private extern static float HPDF_Page_GetTextLeading(IntPtr page);
@@ -1112,7 +1112,7 @@ public class HPdfPage{
                 float value);
 
     [DllImport("libhpdf.dll")]
-    private extern static uint HPDF_Page_SetHorizontalScalling(IntPtr page,
+    private extern static uint HPDF_Page_SetHorizontalScaling(IntPtr page,
                 float value);
 
     [DllImport("libhpdf.dll")]
@@ -1404,8 +1404,8 @@ public class HPdfPage{
         return HPDF_Page_GetWordSpace(hpage);
     }
 
-    public float GetHorizontalScalling() {
-        return HPDF_Page_GetHorizontalScalling(hpage);
+    public float GetHorizontalScaling() {
+        return HPDF_Page_GetHorizontalScaling(hpage);
     }
 
     public float GetTextLeading() {
@@ -1596,8 +1596,8 @@ public class HPdfPage{
         HPDF_Page_SetWordSpace(hpage, value);
     }
 
-    public void SetHorizontalScalling(float value) {
-        HPDF_Page_SetHorizontalScalling(hpage, value);
+    public void SetHorizontalScaling(float value) {
+        HPDF_Page_SetHorizontalScaling(hpage, value);
     }
 
     public void SetTextLeading(float value) {

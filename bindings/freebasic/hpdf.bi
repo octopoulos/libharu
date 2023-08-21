@@ -9,10 +9,10 @@
 #ifndef __hpdf_bi__
 #define __hpdf_bi__
 
-#inclib "hpdf"  
+#inclib "hpdf"
 
 
-'extern "c" 
+'extern "c"
 declare function HPDF_GetVersion cdecl alias "HPDF_GetVersion" () as zstring ptr
 declare function HPDF_NewEx cdecl alias "HPDF_NewEx" (byval user_error_fn as HPDF_Error_Handler, byval user_alloc_fn as HPDF_Alloc_Func, byval user_free_fn as HPDF_Free_Func, byval mem_pool_buf_size as HPDF_UINT, byval user_data as any ptr) as HPDF_Doc
 declare function HPDF_New cdecl alias "HPDF_New" (byval user_error_fn as HPDF_Error_Handler, byval user_data as any ptr) as HPDF_Doc
@@ -139,7 +139,7 @@ declare function HPDF_Page_GetDash cdecl alias "HPDF_Page_GetDash" (byval page a
 declare function HPDF_Page_GetFlat cdecl alias "HPDF_Page_GetFlat" (byval page as HPDF_Page) as HPDF_REAL
 declare function HPDF_Page_GetCharSpace cdecl alias "HPDF_Page_GetCharSpace" (byval page as HPDF_Page) as HPDF_REAL
 declare function HPDF_Page_GetWordSpace cdecl alias "HPDF_Page_GetWordSpace" (byval page as HPDF_Page) as HPDF_REAL
-declare function HPDF_Page_GetHorizontalScalling cdecl alias "HPDF_Page_GetHorizontalScalling" (byval page as HPDF_Page) as HPDF_REAL
+declare function HPDF_Page_GetHorizontalScaling cdecl alias "HPDF_Page_GetHorizontalScaling" (byval page as HPDF_Page) as HPDF_REAL
 declare function HPDF_Page_GetTextLeading cdecl alias "HPDF_Page_GetTextLeading" (byval page as HPDF_Page) as HPDF_REAL
 declare function HPDF_Page_GetTextRenderingMode cdecl alias "HPDF_Page_GetTextRenderingMode" (byval page as HPDF_Page) as HPDF_TextRenderingMode
 declare function HPDF_Page_GetTextRaise cdecl alias "HPDF_Page_GetTextRaise" (byval page as HPDF_Page) as HPDF_REAL
@@ -186,7 +186,7 @@ declare function HPDF_Page_BeginText cdecl alias "HPDF_Page_BeginText" (byval pa
 declare function HPDF_Page_EndText cdecl alias "HPDF_Page_EndText" (byval page as HPDF_Page) as HPDF_STATUS
 declare function HPDF_Page_SetCharSpace cdecl alias "HPDF_Page_SetCharSpace" (byval page as HPDF_Page, byval value as HPDF_REAL) as HPDF_STATUS
 declare function HPDF_Page_SetWordSpace cdecl alias "HPDF_Page_SetWordSpace" (byval page as HPDF_Page, byval value as HPDF_REAL) as HPDF_STATUS
-declare function HPDF_Page_SetHorizontalScalling cdecl alias "HPDF_Page_SetHorizontalScalling" (byval page as HPDF_Page, byval value as HPDF_REAL) as HPDF_STATUS
+declare function HPDF_Page_SetHorizontalScaling cdecl alias "HPDF_Page_SetHorizontalScaling" (byval page as HPDF_Page, byval value as HPDF_REAL) as HPDF_STATUS
 declare function HPDF_Page_SetTextLeading cdecl alias "HPDF_Page_SetTextLeading" (byval page as HPDF_Page, byval value as HPDF_REAL) as HPDF_STATUS
 declare function HPDF_Page_SetFontAndSize cdecl alias "HPDF_Page_SetFontAndSize" (byval page as HPDF_Page, byval font as HPDF_Font, byval size as HPDF_REAL) as HPDF_STATUS
 declare function HPDF_Page_SetTextRenderingMode cdecl alias "HPDF_Page_SetTextRenderingMode" (byval page as HPDF_Page, byval mode as HPDF_TextRenderingMode) as HPDF_STATUS

@@ -85,7 +85,7 @@ function HPDF_GetStreamSize (pdf: HPDF_Doc): HPDF_UINT32;
          stdcall external LIBHPDF_DLL;
 
 
-function HPDF_ReadFromStream (pdf: HPDF_Doc; buf: HPDF_PBYTE; 
+function HPDF_ReadFromStream (pdf: HPDF_Doc; buf: HPDF_PBYTE;
          size: HPDF_PUINT): HPDF_STATUS; stdcall external LIBHPDF_DLL;
 
 
@@ -485,7 +485,7 @@ function HPDF_Font_TextWidth  (font: HPDF_Font; const text: PChar; len: HPDF_UIN
 
 
 function HPDF_Font_MeasureText (font: HPDF_Font; const text: PChar; len: HPDF_UINT;
-         width: HPDF_REAL; font_size: HPDF_REAL; char_space: HPDF_REAL; 
+         width: HPDF_REAL; font_size: HPDF_REAL; char_space: HPDF_REAL;
          word_space: HPDF_REAL; wordwrap: HPDF_BOOL; real_width: HPDF_PREAL) : HPDF_UINT;
          stdcall external LIBHPDF_DLL;
 
@@ -493,15 +493,15 @@ function HPDF_CreateExtGState  (pdf: HPDF_Doc) : HPDF_ExtGState;
          stdcall external LIBHPDF_DLL;
 
 
-function HPDF_ExtGState_SetAlphaStroke  (ext_gstate: HPDF_ExtGState; 
+function HPDF_ExtGState_SetAlphaStroke  (ext_gstate: HPDF_ExtGState;
          value: HPDF_REAL) : HPDF_STATUS; stdcall external LIBHPDF_DLL;
 
 
-function HPDF_ExtGState_SetAlphaFill  (ext_gstate: HPDF_ExtGState; 
+function HPDF_ExtGState_SetAlphaFill  (ext_gstate: HPDF_ExtGState;
          value: HPDF_REAL) : HPDF_STATUS; stdcall external LIBHPDF_DLL;
 
 
-function HPDF_ExtGState_SetBlendMode  (ext_gstate: HPDF_ExtGState; 
+function HPDF_ExtGState_SetBlendMode  (ext_gstate: HPDF_ExtGState;
          mode: THPDF_BlendMode) : HPDF_STATUS; stdcall external LIBHPDF_DLL;
 
 
@@ -545,7 +545,7 @@ function HPDF_Page_GetWordSpace (page: HPDF_Page): HPDF_REAL;
          stdcall external LIBHPDF_DLL;
 
 
-function HPDF_Page_GetHorizontalScalling (page: HPDF_Page): HPDF_REAL;
+function HPDF_Page_GetHorizontalScaling (page: HPDF_Page): HPDF_REAL;
          stdcall external LIBHPDF_DLL;
 
 
@@ -733,7 +733,7 @@ function HPDF_Page_SetWordSpace (page: HPDF_Page; value: HPDF_REAL): HPDF_STATUS
          stdcall external LIBHPDF_DLL;
 
 
-function HPDF_Page_SetHorizontalScalling (page: HPDF_Page; value: HPDF_REAL):
+function HPDF_Page_SetHorizontalScaling (page: HPDF_Page; value: HPDF_REAL):
         HPDF_STATUS; stdcall external LIBHPDF_DLL;
 
 
@@ -761,7 +761,7 @@ function HPDF_Page_MoveTextPos2 (page: HPDF_Page; x: HPDF_REAL; y: HPDF_REAL):
         HPDF_STATUS; stdcall external LIBHPDF_DLL;
 
 
-function HPDF_Page_SetTextMatrix (page: HPDF_Page; a: HPDF_REAL; b: HPDF_REAL; 
+function HPDF_Page_SetTextMatrix (page: HPDF_Page; a: HPDF_REAL; b: HPDF_REAL;
         c: HPDF_REAL; d: HPDF_REAL; x: HPDF_REAL; y: HPDF_REAL):
         HPDF_STATUS; stdcall external LIBHPDF_DLL;
 
@@ -832,13 +832,13 @@ function HPDF_Page_TextOut (page: HPDF_Page; xpos: HPDF_REAL; ypos: HPDF_REAL;
 
 
 function HPDF_Page_TextRect  (page: HPDF_Page; left: HPDF_REAL; top: HPDF_REAL;
-        right: HPDF_REAL; bottom: HPDF_REAL; const text: HPDF_PCHAR; 
-        align: THPDF_TextAlignment; len: HPDF_PUINT): HPDF_STATUS; 
+        right: HPDF_REAL; bottom: HPDF_REAL; const text: HPDF_PCHAR;
+        align: THPDF_TextAlignment; len: HPDF_PUINT): HPDF_STATUS;
          stdcall external LIBHPDF_DLL;
 
 
-function HPDF_Page_SetSlideShow  (page: HPDF_Page; sstype: THPDF_TransitionStyle; 
-        disp_time: HPDF_REAL; trans_time: HPDF_REAL): HPDF_STATUS; 
+function HPDF_Page_SetSlideShow  (page: HPDF_Page; sstype: THPDF_TransitionStyle;
+        disp_time: HPDF_REAL; trans_time: HPDF_REAL): HPDF_STATUS;
          stdcall external LIBHPDF_DLL;
 
 implementation

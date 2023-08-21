@@ -1073,9 +1073,9 @@ HPDF_Page_GetWordSpace=haru.HPDF_Page_GetWordSpace
 HPDF_Page_GetWordSpace.restype=HPDF_REAL
 
 
-#HPDF_REAL HPDF_Page_GetHorizontalScalling (HPDF_Page page)
-HPDF_Page_GetHorizontalScalling=haru.HPDF_Page_GetHorizontalScalling
-HPDF_Page_GetHorizontalScalling.restype=HPDF_REAL
+#HPDF_REAL HPDF_Page_GetHorizontalScaling (HPDF_Page page)
+HPDF_Page_GetHorizontalScaling=haru.HPDF_Page_GetHorizontalScaling
+HPDF_Page_GetHorizontalScaling.restype=HPDF_REAL
 
 
 #HPDF_REAL HPDF_Page_GetTextLeading (HPDF_Page page)
@@ -1560,15 +1560,15 @@ def HPDF_Page_SetWordSpace(
 
 # Tz
 
-#HPDF_STATUS HPDF_Page_SetHorizontalScalling (HPDF_Page page, HPDF_REAL value)
-_HPDF_Page_SetHorizontalScalling=haru.HPDF_Page_SetHorizontalScalling
-_HPDF_Page_SetHorizontalScalling.restype=HPDF_STATUS
-def HPDF_Page_SetHorizontalScalling(
+#HPDF_STATUS HPDF_Page_SetHorizontalScaling (HPDF_Page page, HPDF_REAL value)
+_HPDF_Page_SetHorizontalScaling=haru.HPDF_Page_SetHorizontalScaling
+_HPDF_Page_SetHorizontalScaling.restype=HPDF_STATUS
+def HPDF_Page_SetHorizontalScaling(
                                     page,    #HPDF_Page
                                     value,    #HPDF_REAL
                                    ):
     value=HPDF_REAL(value)
-    return _HPDF_Page_SetHorizontalScalling(
+    return _HPDF_Page_SetHorizontalScaling(
                                             page,    #HPDF_Page
                                             value,    #HPDF_REAL
                                            )

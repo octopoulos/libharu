@@ -53,13 +53,13 @@ Module ImageDemo
             page.ShowText("ImageDemo")
             page.EndText()
 
-            ' load image file. 
+            ' load image file.
             Dim image As HPdfImage = pdf.LoadPngImageFromFile("demo\\pngsuite\\basn3p02.png")
 
             ' image1 is masked by image2.
             Dim image1 As HPdfImage = pdf.LoadPngImageFromFile("demo\\pngsuite\\basn3p02.png")
 
-            ' image2 is a mask image. 
+            ' image2 is a mask image.
             Dim image2 As HPdfImage = pdf.LoadPngImageFromFile("demo\\pngsuite\\basn0g01.png")
 
             ' image3 is a RGB-color image. we use this image for color-mask
@@ -82,21 +82,21 @@ Module ImageDemo
 
             x += 150
 
-            ' Scalling image (X direction)
+            ' Scaling image (X direction)
             page.DrawImage(image, x, y, iw * 1.5F, ih)
 
-            ShowDescription(page, x, y, "Scalling image (X direction)")
+            ShowDescription(page, x, y, "Scaling image (X direction)")
 
             x += 150
 
-            ' Scalling image (Y direction).
+            ' Scaling image (Y direction).
             page.DrawImage(image, x, y, iw, ih * 1.5F)
-            ShowDescription(page, x, y, "Scalling image (Y direction)")
+            ShowDescription(page, x, y, "Scaling image (Y direction)")
 
             x = 100
             y -= 120
 
-            ' Skewing image. 
+            ' Skewing image.
             Dim angle1 As Single = 10
             Dim angle2 As Single = 20
             Dim rad1 As Single = angle1 / 180 * 3.141592F
@@ -113,7 +113,7 @@ Module ImageDemo
 
             x += 150
 
-            ' Rotating image 
+            ' Rotating image
             Dim angle As Single = 30                        ' rotation of 30 degrees.
             Dim rad As Single = angle / 180 * 3.141592F     ' Calculate the radian value.
 
@@ -158,7 +158,7 @@ Module ImageDemo
 
             ShowDescription(page, x, y, "Color Mask")
 
-            ' save the document to a file 
+            ' save the document to a file
             pdf.SaveToFile("ImageDemo.pdf")
 
         Catch ex As Exception
@@ -167,4 +167,4 @@ Module ImageDemo
     End Sub
 
 End Module
-    
+

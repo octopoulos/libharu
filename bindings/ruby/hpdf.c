@@ -2043,16 +2043,16 @@ hpdf_page_get_word_space (VALUE obj)
 }
 
 static VALUE
-hpdf_page_get_horizontal_scalling (VALUE obj)
+hpdf_page_get_horizontal_scaling (VALUE obj)
 {
     HPDF_Page page;
     HPDF_REAL f;
 
     Data_Get_Struct(obj, HPDF_Dict_Rec, page);
 
-    HPDF_PTRACE(("hpdf_page_get_horizontal_scalling page=%p\n", page));
+    HPDF_PTRACE(("hpdf_page_get_horizontal_scaling page=%p\n", page));
 
-    f = HPDF_Page_GetHorizontalScalling(page);
+    f = HPDF_Page_GetHorizontalScaling(page);
 
     return rb_float_new(f);
 }
@@ -2893,18 +2893,18 @@ hpdf_page_set_word_space (VALUE obj, VALUE word_space)
 }
 
 static VALUE
-hpdf_page_set_horizontal_scalling (VALUE obj, VALUE scalling)
+hpdf_page_set_horizontal_scaling (VALUE obj, VALUE scaling)
 {
     HPDF_Page page;
     HPDF_STATUS ret;
     HPDF_REAL f;
 
     Data_Get_Struct(obj, HPDF_Dict_Rec, page);
-    f = NUM2DBL(scalling);
+    f = NUM2DBL(scaling);
 
-    HPDF_PTRACE(("hpdf_page_set_horizontal_scalling page=%p\n", page));
+    HPDF_PTRACE(("hpdf_page_set_horizontal_scaling page=%p\n", page));
 
-    ret = HPDF_Page_SetHorizontalScalling(page, f);
+    ret = HPDF_Page_SetHorizontalScaling(page, f);
 
     return INT2NUM(ret);
 }
@@ -3562,7 +3562,7 @@ Init_hpdf()
     rb_define_method(rb_cHPDFPage, "get_flat", hpdf_page_get_flat, 0);
     rb_define_method(rb_cHPDFPage, "get_char_space", hpdf_page_get_char_space, 0);
     rb_define_method(rb_cHPDFPage, "get_word_space", hpdf_page_get_word_space, 0);
-    rb_define_method(rb_cHPDFPage, "get_horizontal_scalling", hpdf_page_get_horizontal_scalling, 0);
+    rb_define_method(rb_cHPDFPage, "get_horizontal_scaling", hpdf_page_get_horizontal_scaling, 0);
     rb_define_method(rb_cHPDFPage, "get_text_leading", hpdf_page_get_text_leading, 0);
     rb_define_method(rb_cHPDFPage, "get_text_rendering_mode", hpdf_page_get_text_rendering_mode, 0);
     rb_define_method(rb_cHPDFPage, "get_text_raise", hpdf_page_get_text_raise, 0);
@@ -3609,7 +3609,7 @@ Init_hpdf()
     rb_define_method(rb_cHPDFPage, "end_text", hpdf_page_end_text, 0);
     rb_define_method(rb_cHPDFPage, "set_char_space", hpdf_page_set_char_space, 1);
     rb_define_method(rb_cHPDFPage, "set_word_space", hpdf_page_set_word_space, 1);
-    rb_define_method(rb_cHPDFPage, "set_horizontal_scalling", hpdf_page_set_horizontal_scalling, 1);
+    rb_define_method(rb_cHPDFPage, "set_horizontal_scaling", hpdf_page_set_horizontal_scaling, 1);
     rb_define_method(rb_cHPDFPage, "set_text_leading", hpdf_page_set_text_leading, 1);
     rb_define_method(rb_cHPDFPage, "set_font_and_size", hpdf_page_set_font_and_size, 2);
     rb_define_method(rb_cHPDFPage, "set_text_rendering_mode", hpdf_page_set_text_rendering_mode, 1);

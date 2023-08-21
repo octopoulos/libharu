@@ -114,7 +114,7 @@ EXPORTS
  HPDF_Page_GetGrayStroke@4           = HPDF_Page_GetGrayStroke
  HPDF_Page_GetGStateDepth@4          = HPDF_Page_GetGStateDepth
  HPDF_Page_GetHeight@4               = HPDF_Page_GetHeight
- HPDF_Page_GetHorizontalScalling@4   = HPDF_Page_GetHorizontalScalling
+ HPDF_Page_GetHorizontalScaling@4    = HPDF_Page_GetHorizontalScaling
  HPDF_Page_GetLineCap@4              = HPDF_Page_GetLineCap
  HPDF_Page_GetLineJoin@4             = HPDF_Page_GetLineJoin
  HPDF_Page_GetLineWidth@4            = HPDF_Page_GetLineWidth
@@ -149,7 +149,7 @@ EXPORTS
  HPDF_Page_SetGrayFill@8             = HPDF_Page_SetGrayFill
  HPDF_Page_SetGrayStroke@8           = HPDF_Page_SetGrayStroke
  HPDF_Page_SetHeight@8               = HPDF_Page_SetHeight
- HPDF_Page_SetHorizontalScalling@8   = HPDF_Page_SetHorizontalScalling
+ HPDF_Page_SetHorizontalScaling@8    = HPDF_Page_SetHorizontalScaling
  HPDF_Page_SetLineCap@8              = HPDF_Page_SetLineCap
  HPDF_Page_SetLineJoin@8             = HPDF_Page_SetLineJoin
  HPDF_Page_SetLineWidth@8            = HPDF_Page_SetLineWidth

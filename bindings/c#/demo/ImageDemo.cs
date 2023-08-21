@@ -101,16 +101,16 @@ public class ImageDemo {
 
             x += 150;
 
-            /* Scalling image (X direction) */
+            /* Scaling image (X direction) */
             page.DrawImage(image, x, y, iw * 1.5f, ih);
 
-            ShowDescription(page, x, y, "Scalling image (X direction)");
+            ShowDescription(page, x, y, "Scaling image (X direction)");
 
             x += 150;
 
-            /* Scalling image (Y direction). */
+            /* Scaling image (Y direction). */
             page.DrawImage(image, x, y, iw, ih * 1.5f);
-            ShowDescription(page, x, y, "Scalling image (Y direction)");
+            ShowDescription(page, x, y, "Scaling image (Y direction)");
 
             x = 100;
             y -= 120;
@@ -123,7 +123,7 @@ public class ImageDemo {
 
             page.GSave();
 
-            page.Concat(iw, (float)Math.Tan(rad1) * iw, (float)Math.Tan(rad2) * ih, 
+            page.Concat(iw, (float)Math.Tan(rad1) * iw, (float)Math.Tan(rad2) * ih,
                     ih, x, y);
 
             page.ExecuteXObject(image);

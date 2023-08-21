@@ -1156,7 +1156,7 @@ HPDF_Page_SetHorizontalScaling(HPDF_Page  page, HPDF_REAL  value)
 		if (HPDF_Stream_WriteStr(attr->stream, " Tz\012") != HPDF_OK)
 			return HPDF_CheckError(page->error);
 	}
-    attr->gstate->h_scalling = value;
+    attr->gstate->h_scaling = value;
 
     return ret;
 }

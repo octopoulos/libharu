@@ -119,7 +119,7 @@ EXPORTS
     HPDF_Page_GetGrayStroke
     HPDF_Page_GetGStateDepth
     HPDF_Page_GetHeight
-    HPDF_Page_GetHorizontalScalling
+    HPDF_Page_GetHorizontalScaling
     HPDF_Page_GetLineCap
     HPDF_Page_GetLineJoin
     HPDF_Page_GetLineWidth
@@ -154,7 +154,7 @@ EXPORTS
     HPDF_Page_SetGrayFill
     HPDF_Page_SetGrayStroke
     HPDF_Page_SetHeight
-    HPDF_Page_SetHorizontalScalling
+    HPDF_Page_SetHorizontalScaling
     HPDF_Page_SetLineCap
     HPDF_Page_SetLineJoin
     HPDF_Page_SetLineWidth

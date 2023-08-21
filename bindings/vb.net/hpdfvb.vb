@@ -661,7 +661,7 @@ Namespace HPdf
         Private Declare Function HPDF_Page_GetFlat Lib "libhpdf.dll" Alias "HPDF_Page_GetFlat" (ByVal page As IntPtr) As Single
         Private Declare Function HPDF_Page_GetCharSpace Lib "libhpdf.dll" Alias "HPDF_Page_GetCharSpace" (ByVal page As IntPtr) As Single
         Private Declare Function HPDF_Page_GetWordSpace Lib "libhpdf.dll" Alias "HPDF_Page_GetWordSpace" (ByVal page As IntPtr) As Single
-        Private Declare Function HPDF_Page_GetHorizontalScalling Lib "libhpdf.dll" Alias "HPDF_Page_GetHorizontalScalling" (ByVal page As IntPtr) As Single
+        Private Declare Function HPDF_Page_GetHorizontalScaling Lib "libhpdf.dll" Alias "HPDF_Page_GetHorizontalScaling" (ByVal page As IntPtr) As Single
         Private Declare Function HPDF_Page_GetTextLeading Lib "libhpdf.dll" Alias "HPDF_Page_GetTextLeading" (ByVal page As IntPtr) As Single
         Private Declare Function HPDF_Page_GetTextRenderingMode Lib "libhpdf.dll" Alias "HPDF_Page_GetTextRenderingMode" (ByVal page As IntPtr) As HPdfTextRenderingMode
         Private Declare Function HPDF_Page_GetTextRaise Lib "libhpdf.dll" Alias "HPDF_Page_GetTextRaise" (ByVal page As IntPtr) As Single
@@ -715,7 +715,7 @@ Namespace HPdf
         ' --- Text state ---------------------------------------------------------
         Private Declare Function HPDF_Page_SetCharSpace Lib "libhpdf.dll" Alias "HPDF_Page_SetCharSpace" (ByVal page As IntPtr, ByVal value As Single) As UInt32
         Private Declare Function HPDF_Page_SetWordSpace Lib "libhpdf.dll" Alias "HPDF_Page_SetWordSpace" (ByVal page As IntPtr, ByVal value As Single) As UInt32
-        Private Declare Function HPDF_Page_SetHorizontalScalling Lib "libhpdf.dll" Alias "HPDF_Page_SetHorizontalScalling" (ByVal page As IntPtr, ByVal value As Single) As UInt32
+        Private Declare Function HPDF_Page_SetHorizontalScaling Lib "libhpdf.dll" Alias "HPDF_Page_SetHorizontalScaling" (ByVal page As IntPtr, ByVal value As Single) As UInt32
         Private Declare Function HPDF_Page_SetTextLeading Lib "libhpdf.dll" Alias "HPDF_Page_SetTextLeading" (ByVal page As IntPtr, ByVal value As Single) As UInt32
         Private Declare Function HPDF_Page_SetFontAndSize Lib "libhpdf.dll" Alias "HPDF_Page_SetFontAndSize" (ByVal page As IntPtr, ByVal hfont As IntPtr, ByVal size As Single) As UInt32
         Private Declare Function HPDF_Page_SetTextRenderingMode Lib "libhpdf.dll" Alias "HPDF_Page_SetTextRenderingMode" (ByVal page As IntPtr, ByVal mode As HPdfTextRenderingMode) As UInt32
@@ -928,8 +928,8 @@ Namespace HPdf
             Return HPDF_Page_GetWordSpace(hpage)
         End Function
 
-        Public Function GetHorizontalScalling() As Single
-            Return HPDF_Page_GetHorizontalScalling(hpage)
+        Public Function GetHorizontalScaling() As Single
+            Return HPDF_Page_GetHorizontalScaling(hpage)
         End Function
 
         Public Function GetTextLeading() As Single
@@ -1119,8 +1119,8 @@ Namespace HPdf
             HPDF_Page_SetWordSpace(hpage, value)
         End Sub
 
-        Public Sub SetHorizontalScalling(ByVal value As Single)
-            HPDF_Page_SetHorizontalScalling(hpage, value)
+        Public Sub SetHorizontalScaling(ByVal value As Single)
+            HPDF_Page_SetHorizontalScaling(hpage, value)
         End Sub
 
         Public Sub SetTextLeading(ByVal value As Single)
@@ -1403,7 +1403,7 @@ Namespace HPdf
         Public Sub SetFitV(ByVal left As Single)
             HPDF_Destination_SetFitV(hdest, left)
         End Sub
-    
+
         Public Sub SetFitR(ByVal left As Single, ByVal bottom As Single, ByVal right As Single, ByVal top As Single)
             HPDF_Destination_SetFitR(hdest, left, bottom, right, top)
         End Sub
@@ -1419,7 +1419,7 @@ Namespace HPdf
         Public Sub SetFitBV(ByVal left As Single)
             HPDF_Destination_SetFitBV(hdest, left)
         End Sub
-    
+
         Public Function GetHandle() As IntPtr
             Return hdest
         End Function

@@ -182,7 +182,7 @@ Public Declare Function HPDF_Page_GetDash Lib "libhpdf.dll" (ByVal page As Long)
 Public Declare Function HPDF_Page_GetFlat Lib "libhpdf.dll" (ByVal page As Long) As Single
 Public Declare Function HPDF_Page_GetCharSpace Lib "libhpdf.dll" (ByVal page As Long) As Single
 Public Declare Function HPDF_Page_GetWordSpace Lib "libhpdf.dll" (ByVal page As Long) As Single
-Public Declare Function HPDF_Page_GetHorizontalScalling Lib "libhpdf.dll" (ByVal page As Long) As Single
+Public Declare Function HPDF_Page_GetHorizontalScaling Lib "libhpdf.dll" (ByVal page As Long) As Single
 Public Declare Function HPDF_Page_GetTextLeading Lib "libhpdf.dll" (ByVal page As Long) As Single
 Public Declare Function HPDF_Page_GetTextRenderingMode Lib "libhpdf.dll" (ByVal page As Long) As HPDF_TextRenderingMode
 '/* This function is obsolete. Use HPDF_Page_GetTextRise.  */
@@ -272,7 +272,7 @@ Public Declare Function HPDF_Page_SetCharSpace Lib "libhpdf.dll" (ByVal page As 
 '/* Tw */
 Public Declare Function HPDF_Page_SetWordSpace Lib "libhpdf.dll" (ByVal page As Long, ByVal value As Single) As Long
 '/* Tz */
-Public Declare Function HPDF_Page_SetHorizontalScalling Lib "libhpdf.dll" (ByVal page As Long, ByVal value As Single) As Long
+Public Declare Function HPDF_Page_SetHorizontalScaling Lib "libhpdf.dll" (ByVal page As Long, ByVal value As Single) As Long
 '/* TL */
 Public Declare Function HPDF_Page_SetTextLeading Lib "libhpdf.dll" (ByVal page As Long, ByVal value As Single) As Long
 '/* Tf */
@@ -341,7 +341,7 @@ Public Declare Function HPDF_Page_ExecuteXObject Lib "libhpdf.dll" (ByVal page A
 '/* EX --not implemented yet */
 Public Declare Function HPDF_Page_DrawImage Lib "libhpdf.dll" (ByVal page As Long, ByVal image As Long, ByVal x As Single, ByVal y As Single, ByVal Width As Single, ByVal height As Single) As Long
 Public Declare Function HPDF_Page_Circle Lib "libhpdf.dll" (ByVal page As Long, ByVal x As Single, ByVal y As Single, ByVal ray As Single) As Long
-Public Declare Function HPDF_Page_Ellipse Lib "libhpdf.dll" (ByVal page As Long, ByVal x As Single, ByVal y As Single, ByVal xray As Single, 
+Public Declare Function HPDF_Page_Ellipse Lib "libhpdf.dll" (ByVal page As Long, ByVal x As Single, ByVal y As Single, ByVal xray As Single,
  ByVal yray As Single) As Long
 Public Declare Function HPDF_Page_Arc Lib "libhpdf.dll" (ByVal page As Long, ByVal x As Single, ByVal y As Single, ByVal ray As Single, ByVal ang1 As Single, ByVal ang2 As Single) As Long
 Public Declare Function HPDF_Page_TextOut Lib "libhpdf.dll" (ByVal page As Long, ByVal xpos As Single, ByVal ypos As Single, ByVal text As String) As Long

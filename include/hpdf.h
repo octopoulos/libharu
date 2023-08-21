@@ -1100,7 +1100,7 @@ HPDF_Page_GetWordSpace  (HPDF_Page   page);
 
 
 HPDF_EXPORT(HPDF_REAL)
-HPDF_Page_GetHorizontalScalling  (HPDF_Page   page);
+HPDF_Page_GetHorizontalScaling  (HPDF_Page   page);
 
 
 HPDF_EXPORT(HPDF_REAL)
