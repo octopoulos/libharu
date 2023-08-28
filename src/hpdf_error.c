@@ -74,8 +74,7 @@ HPDF_CopyError  (HPDF_Error  dst,
 HPDF_STATUS
 HPDF_SetError(HPDF_Error error, HPDF_STATUS error_no, HPDF_STATUS detail_no, const char* text, const char* fileName, int lineNo)
 {
-    HPDF_PTRACE((" HPDF_SetError: error_no=0x%04X "
-            "detail_no=0x%04X\n", (HPDF_UINT)error_no, (HPDF_UINT)detail_no));
+    HPDF_PTRACE(("HPDF_SetError: error_no=0x%04X detail_no=0x%04X\n", (HPDF_UINT)error_no, (HPDF_UINT)detail_no));
 
     error->error_no  = error_no;
 	error->detail_no = detail_no;

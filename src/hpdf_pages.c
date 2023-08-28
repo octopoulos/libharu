@@ -381,23 +381,22 @@ Page_OnFree  (HPDF_Dict  obj)
     }
 }
 
-
 HPDF_STATUS
-HPDF_Page_CheckState  (HPDF_Page  page,
-                       HPDF_UINT  mode)
+HPDF_Page_CheckState(HPDF_Page page, HPDF_UINT mode, const char* origin)
 {
-    if (!page)
-        return HPDF_INVALID_OBJECT;
+    if (!page) return HPDF_INVALID_OBJECT;
 
     if (page->header.obj_class != (HPDF_OSUBCLASS_PAGE | HPDF_OCLASS_DICT))
         return HPDF_INVALID_PAGE;
 
     if (!(((HPDF_PageAttr)page->attr)->gmode & mode))
-		return RAISE_ERROR(page->error, HPDF_PAGE_INVALID_GMODE, 0);
-
+	{
+		static char error[256];
+		sprintf(error, "%s gmode=%d want=%d", origin, ((HPDF_PageAttr)page->attr)->gmode, mode);
+		return TEXT_ERROR(page->error, HPDF_PAGE_INVALID_GMODE, 0, error);
+	}
     return HPDF_OK;
 }
-
 
 void*
 HPDF_Page_GetInheritableItem  (HPDF_Page          page,

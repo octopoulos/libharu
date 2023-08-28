@@ -126,8 +126,7 @@ HPDF_Page_SetFilter  (HPDF_Page    page,
 
 
 HPDF_STATUS
-HPDF_Page_CheckState  (HPDF_Page  page,
-                       HPDF_UINT  mode);
+HPDF_Page_CheckState(HPDF_Page page, HPDF_UINT mode, const char* origin);
 
 
 #ifdef __cplusplus
