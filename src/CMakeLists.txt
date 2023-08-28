@@ -22,6 +22,7 @@ set(
   	hpdf_encoder_cnt.c
   	hpdf_encoder_jp.c
   	hpdf_encoder_kr.c
+  	hpdf_encoder_utf.c
   	hpdf_encoder.c
   	hpdf_encrypt.c
   	hpdf_encryptdict.c
@@ -73,6 +74,10 @@ set(
 # create hpdf library
 # =======================================================================
 add_library(hpdf ${LIBHPDF_SRCS})
+set_target_properties(hpdf PROPERTIES
+    SOVERSION ${HPDF_MAJOR_VERSION}
+    VERSION ${HPDF_MAJOR_VERSION}.${HPDF_MINOR_VERSION}.${HPDF_BUGFIX_VERSION}
+)
 if (PNG_FOUND)
     include_directories (${PNG_INCLUDE_DIRS})
     target_link_libraries (hpdf ${PNG_LIBRARIES})
