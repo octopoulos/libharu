@@ -1644,30 +1644,6 @@ LoadTTFontFromStream2 (HPDF_Doc         pdf,
     return def->base_font;
 }
 
-int HPDF_LoadTTFontFromBuffer(HPDF_Doc pdf, const HPDF_BYTE* buffer, HPDF_UINT size, HPDF_BOOL embedding)
-{
-	if (!HPDF_HasDoc(pdf)) return 0;
-
-	HPDF_Stream font_data = HPDF_MemStream_New(pdf->mmgr, size);
-	if (!HPDF_Stream_Validate(font_data))
-	{
-		RAISE_ERROR(&pdf->error, HPDF_INVALID_STREAM, 0);
-		return 0;
-	}
-
-	if (HPDF_Stream_Write(font_data, buffer, size) != HPDF_OK)
-	{
-		HPDF_Stream_Free(font_data);
-		return 0;
-	}
-
-	const char* fontName = LoadTTFontFromStream(pdf, font_data, embedding, "");
-
-	HPDF_Stream_Free(font_data);
-
-	return 2;
-}
-
 HPDF_EXPORT(const char*)
 HPDF_LoadTTFontFromMem(HPDF_Doc pdf, const HPDF_BYTE* buffer, HPDF_UINT size, HPDF_BOOL embedding)
 {
