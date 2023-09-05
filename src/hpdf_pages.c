@@ -2417,7 +2417,7 @@ HPDF_Page_SetBoundary  (HPDF_Page           page,
             key = "ArtBox";
             break;
         default:
-            return HPDF_RaiseError(page->error, HPDF_PAGE_INVALID_BOUNDARY, 0);
+		    return RAISE_ERROR(page->error, HPDF_PAGE_INVALID_BOUNDARY, 0);
             break;
     }
 
