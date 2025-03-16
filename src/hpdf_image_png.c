@@ -426,15 +426,15 @@ LoadPngData  (HPDF_Dict     image,
 	png_ptr = png_create_read_struct (PNG_LIBPNG_VER_STRING, image->error, PngErrorFunc, NULL);
 
 	if (png_ptr == NULL) {
-		SET_ERROR(image->error, HPDF_FAILD_TO_ALLOC_MEM, 0);
-		return HPDF_FAILD_TO_ALLOC_MEM;
+		SET_ERROR(image->error, HPDF_FAILED_TO_ALLOC_MEM, 0);
+		return HPDF_FAILED_TO_ALLOC_MEM;
 	}
 
 	/* create info-struct */
 	info_ptr = png_create_info_struct (png_ptr);
 
 	if (info_ptr == NULL) {
-		SET_ERROR(image->error, HPDF_FAILD_TO_ALLOC_MEM, 0);
+		SET_ERROR(image->error, HPDF_FAILED_TO_ALLOC_MEM, 0);
 		goto Exit;
 	}
 

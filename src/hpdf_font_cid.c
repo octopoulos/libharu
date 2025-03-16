@@ -475,10 +475,10 @@ CIDFontType2_BeforeWrite_Func(HPDF_Dict obj)
         /* add 'W' element */
         array = HPDF_Array_New (font->mmgr);
         if (!array)
-			return HPDF_FAILD_TO_ALLOC_MEM;
+			return HPDF_FAILED_TO_ALLOC_MEM;
 
         if (HPDF_Dict_Add (font, "W", array) != HPDF_OK)
-			return HPDF_FAILD_TO_ALLOC_MEM;
+			return HPDF_FAILED_TO_ALLOC_MEM;
 
         for (i = 0; i < max; i++, ptmp_map++) {
             HPDF_INT w = HPDF_TTFontDef_GetGidWidth (def, *ptmp_map);
@@ -487,18 +487,18 @@ CIDFontType2_BeforeWrite_Func(HPDF_Dict obj)
 			{
                 if (!tmp_array) {
                     if (HPDF_Array_AddNumber (array, i) != HPDF_OK)
-						return HPDF_FAILD_TO_ALLOC_MEM;
+						return HPDF_FAILED_TO_ALLOC_MEM;
 
                     tmp_array = HPDF_Array_New (font->mmgr);
                     if (!tmp_array)
-						return HPDF_FAILD_TO_ALLOC_MEM;
+						return HPDF_FAILED_TO_ALLOC_MEM;
 
                     if (HPDF_Array_Add (array, tmp_array) != HPDF_OK)
-						return HPDF_FAILD_TO_ALLOC_MEM;
+						return HPDF_FAILED_TO_ALLOC_MEM;
                 }
 
                 if ((ret = HPDF_Array_AddNumber (tmp_array, w)) != HPDF_OK)
-					return HPDF_FAILD_TO_ALLOC_MEM;
+					return HPDF_FAILED_TO_ALLOC_MEM;
             } else
                   tmp_array = NULL;
         }
@@ -507,10 +507,10 @@ CIDFontType2_BeforeWrite_Func(HPDF_Dict obj)
         if (def_attr->embedding) {
 			font_attr->map_stream = HPDF_DictStream_New(font->mmgr, font_attr->xref);
 			if (!font_attr->map_stream)
-				return HPDF_FAILD_TO_ALLOC_MEM;
+				return HPDF_FAILED_TO_ALLOC_MEM;
 
             if (HPDF_Dict_Add(font, "CIDToGIDMap", font_attr->map_stream) != HPDF_OK)
-				return HPDF_FAILD_TO_ALLOC_MEM;
+				return HPDF_FAILED_TO_ALLOC_MEM;
 
             for (i = 0; i < max; i++) {
                 HPDF_BYTE u[2];
@@ -523,11 +523,11 @@ CIDFontType2_BeforeWrite_Func(HPDF_Dict obj)
             }
 
             if ((ret = HPDF_Stream_Write(font_attr->map_stream->stream, (HPDF_BYTE*)tmp_map, max * 2)) != HPDF_OK)
-				return HPDF_FAILD_TO_ALLOC_MEM;
+				return HPDF_FAILED_TO_ALLOC_MEM;
         }
     } else {
 		SET_ERROR(font->error, HPDF_INVALID_FONTDEF_DATA, 0);
-		return HPDF_FAILD_TO_ALLOC_MEM;
+		return HPDF_FAILED_TO_ALLOC_MEM;
     }
 
     if (font_attr->map_stream)
