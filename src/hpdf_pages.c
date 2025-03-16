@@ -1023,7 +1023,7 @@ HPDF_Page_TextWidth  (HPDF_Page        page,
 
     /* no font exists */
     if (!attr->gstate->font) {
-		RAISE_ERROR(page->error, HPDF_PAGE_FONT_NOT_FOUND, 0);
+        RAISE_ERROR(page->error, HPDF_PAGE_FONT_NOT_FOUND, 0);
         return 0;
     }
 
@@ -1880,7 +1880,7 @@ HPDF_EXPORT(HPDF_Annotation)
 HPDF_Page_CreateWidgetAnnot (HPDF_Page  page,
                              HPDF_Rect  rect)
 {
-	HPDF_PageAttr attr;
+    HPDF_PageAttr attr;
     HPDF_Annotation annot;
 
     HPDF_PTRACE((" HPDF_Page_CreateWidgetAnnot\n"));
@@ -1890,7 +1890,7 @@ HPDF_Page_CreateWidgetAnnot (HPDF_Page  page,
 
     attr = (HPDF_PageAttr)page->attr;
 
-	annot = HPDF_WidgetAnnot_New(page->mmgr, attr->xref, rect);
+    annot = HPDF_WidgetAnnot_New(page->mmgr, attr->xref, rect);
 
     if (annot) {
         if (AddAnnotation (page, annot) != HPDF_OK) {
@@ -2008,7 +2008,7 @@ HPDF_Page_CreateLinkAnnot  (HPDF_Page          page,
 HPDF_EXPORT(HPDF_Annotation)
 HPDF_Page_CreateURILinkAnnot  (HPDF_Page          page,
                                HPDF_Rect          rect,
-                               const char   *uri)
+                               const char        *uri)
 {
     HPDF_PageAttr attr;
     HPDF_Annotation annot;
@@ -2040,7 +2040,7 @@ HPDF_Page_CreateURILinkAnnot  (HPDF_Page          page,
 HPDF_EXPORT(HPDF_Annotation)
 HPDF_Page_CreateCircleAnnot (HPDF_Page          page,
                              HPDF_Rect          rect,
-                             const char            *text,
+                             const char        *text,
                              HPDF_Encoder       encoder)
 {
     HPDF_PageAttr attr;
@@ -2073,7 +2073,7 @@ HPDF_Page_CreateCircleAnnot (HPDF_Page          page,
 HPDF_EXPORT(HPDF_Annotation)
 HPDF_Page_CreateSquareAnnot (HPDF_Page          page,
                              HPDF_Rect          rect,
-                             const char            *text,
+                             const char        *text,
                              HPDF_Encoder       encoder)
 {
     HPDF_PageAttr attr;
@@ -2104,10 +2104,10 @@ HPDF_Page_CreateSquareAnnot (HPDF_Page          page,
 }
 
 HPDF_EXPORT(HPDF_Dict)
-HPDF_Page_Create3DView    (HPDF_Page       page,
-                           HPDF_U3D        u3d,
-                           HPDF_Annotation    annot3d,
-                           const char *name)
+HPDF_Page_Create3DView    (HPDF_Page        page,
+                           HPDF_U3D         u3d,
+                           HPDF_Annotation  annot3d,
+                           const char      *name)
 {
     HPDF_PageAttr attr;
     HPDF_Dict view;
@@ -2128,11 +2128,11 @@ HPDF_Page_Create3DView    (HPDF_Page       page,
 }
 
 HPDF_Annotation
-HPDF_Page_CreateTextMarkupAnnot (HPDF_Page     page,
-                                HPDF_Rect      rect,
-                                const char     *text,
-                                HPDF_Encoder   encoder,
-                                HPDF_AnnotType subType)
+HPDF_Page_CreateTextMarkupAnnot (HPDF_Page       page,
+                                 HPDF_Rect       rect,
+                                 const char     *text,
+                                 HPDF_Encoder    encoder,
+                                 HPDF_AnnotType  subType)
 {
     HPDF_PageAttr attr;
     HPDF_Annotation annot;
@@ -2163,9 +2163,9 @@ HPDF_Page_CreateTextMarkupAnnot (HPDF_Page     page,
 
 
 HPDF_EXPORT(HPDF_Annotation)
-HPDF_Page_CreateHighlightAnnot  (HPDF_Page          page,
+HPDF_Page_CreateHighlightAnnot (HPDF_Page          page,
                                 HPDF_Rect          rect,
-                                const char   *text,
+                                const char        *text,
                                 HPDF_Encoder       encoder)
 {
     HPDF_PTRACE((" HPDF_Page_CreateHighlightAnnot\n"));
@@ -2176,7 +2176,7 @@ HPDF_Page_CreateHighlightAnnot  (HPDF_Page          page,
 HPDF_EXPORT(HPDF_Annotation)
 HPDF_Page_CreateSquigglyAnnot  (HPDF_Page          page,
                                 HPDF_Rect          rect,
-                                const char   *text,
+                                const char        *text,
                                 HPDF_Encoder       encoder)
 {
     HPDF_PTRACE((" HPDF_Page_CreateSquigglyAnnot\n"));
@@ -2234,10 +2234,10 @@ HPDF_Page_CreatePopupAnnot  (    HPDF_Page          page,
 }
 
 HPDF_EXPORT(HPDF_Annotation)
-HPDF_Page_CreateStampAnnot  (    HPDF_Page           page,
+HPDF_Page_CreateStampAnnot  (    HPDF_Page          page,
                                 HPDF_Rect           rect,
                                 HPDF_StampAnnotName name,
-                                const char*            text,
+                                const char*         text,
                                 HPDF_Encoder        encoder)
 {
     HPDF_PageAttr attr;
@@ -2263,114 +2263,114 @@ HPDF_Page_CreateStampAnnot  (    HPDF_Page           page,
 }
 
 HPDF_EXPORT(HPDF_Annotation)
-HPDF_Page_CreateProjectionAnnot(HPDF_Page page,
-								HPDF_Rect rect,
-								const char* text,
-								HPDF_Encoder encoder)
+HPDF_Page_CreateProjectionAnnot(HPDF_Page    page,
+                                HPDF_Rect    rect,
+                                const char*  text,
+                                HPDF_Encoder encoder)
 {
-	HPDF_PageAttr attr;
-	HPDF_Annotation annot;
+    HPDF_PageAttr attr;
+    HPDF_Annotation annot;
 
-	HPDF_PTRACE((" HPDF_Page_CreateProjectionAnnot\n"));
+    HPDF_PTRACE((" HPDF_Page_CreateProjectionAnnot\n"));
 
-	if (!HPDF_Page_Validate (page))
-		return NULL;
+    if (!HPDF_Page_Validate (page))
+        return NULL;
 
-	attr = (HPDF_PageAttr)page->attr;
+    attr = (HPDF_PageAttr)page->attr;
 
-	annot = HPDF_ProjectionAnnot_New (page->mmgr, attr->xref, rect, text, encoder);
-	if (annot) {
-		if (AddAnnotation (page, annot) != HPDF_OK) {
-			HPDF_CheckError (page->error);
-			annot = NULL;
-		}
-	} else
-		HPDF_CheckError (page->error);
+    annot = HPDF_ProjectionAnnot_New (page->mmgr, attr->xref, rect, text, encoder);
+    if (annot) {
+        if (AddAnnotation (page, annot) != HPDF_OK) {
+            HPDF_CheckError (page->error);
+            annot = NULL;
+        }
+    } else
+        HPDF_CheckError (page->error);
 
-	return annot;
+    return annot;
 }
 
 
 HPDF_EXPORT(HPDF_3DMeasure)
-HPDF_Page_Create3DC3DMeasure(HPDF_Page page,
-							 HPDF_Point3D    firstanchorpoint,
-							 HPDF_Point3D    textanchorpoint)
+HPDF_Page_Create3DC3DMeasure(HPDF_Page       page,
+                             HPDF_Point3D    firstanchorpoint,
+                             HPDF_Point3D    textanchorpoint)
 {
-	HPDF_PageAttr attr;
-	HPDF_Annotation measure;
+    HPDF_PageAttr attr;
+    HPDF_Annotation measure;
 
-	HPDF_PTRACE((" HPDF_Page_Create3DC3DMeasure\n"));
+    HPDF_PTRACE((" HPDF_Page_Create3DC3DMeasure\n"));
 
-	if (!HPDF_Page_Validate (page))
-		return NULL;
+    if (!HPDF_Page_Validate (page))
+        return NULL;
 
-	attr = (HPDF_PageAttr)page->attr;
+    attr = (HPDF_PageAttr)page->attr;
 
-	measure = HPDF_3DC3DMeasure_New(page->mmgr, attr->xref, firstanchorpoint, textanchorpoint);
-	if ( !measure)
-		HPDF_CheckError (page->error);
+    measure = HPDF_3DC3DMeasure_New(page->mmgr, attr->xref, firstanchorpoint, textanchorpoint);
+    if ( !measure)
+        HPDF_CheckError (page->error);
 
-	return measure;
+    return measure;
 }
 
 HPDF_EXPORT(HPDF_3DMeasure)
 HPDF_Page_CreatePD33DMeasure(HPDF_Page       page,
-							 HPDF_Point3D    annotationPlaneNormal,
-							 HPDF_Point3D    firstAnchorPoint,
-							 HPDF_Point3D    secondAnchorPoint,
-							 HPDF_Point3D    leaderLinesDirection,
-							 HPDF_Point3D    measurementValuePoint,
-							 HPDF_Point3D    textYDirection,
-							 HPDF_REAL       value,
-							 const char*     unitsString
-							 )
+                             HPDF_Point3D    annotationPlaneNormal,
+                             HPDF_Point3D    firstAnchorPoint,
+                             HPDF_Point3D    secondAnchorPoint,
+                             HPDF_Point3D    leaderLinesDirection,
+                             HPDF_Point3D    measurementValuePoint,
+                             HPDF_Point3D    textYDirection,
+                             HPDF_REAL       value,
+                             const char*     unitsString
+                             )
 {
-	HPDF_PageAttr attr;
-	HPDF_Annotation measure;
+    HPDF_PageAttr attr;
+    HPDF_Annotation measure;
 
-	HPDF_PTRACE((" HPDF_Page_CreatePD33DMeasure\n"));
+    HPDF_PTRACE((" HPDF_Page_CreatePD33DMeasure\n"));
 
-	if (!HPDF_Page_Validate (page))
-		return NULL;
+    if (!HPDF_Page_Validate (page))
+        return NULL;
 
-	attr = (HPDF_PageAttr)page->attr;
+    attr = (HPDF_PageAttr)page->attr;
 
-	measure = HPDF_PD33DMeasure_New(page->mmgr,
-		attr->xref,
-		annotationPlaneNormal,
-		firstAnchorPoint,
-		secondAnchorPoint,
-		leaderLinesDirection,
-		measurementValuePoint,
-		textYDirection,
-		value,
-		unitsString
-		);
-	if ( !measure)
-		HPDF_CheckError (page->error);
+    measure = HPDF_PD33DMeasure_New(page->mmgr,
+        attr->xref,
+        annotationPlaneNormal,
+        firstAnchorPoint,
+        secondAnchorPoint,
+        leaderLinesDirection,
+        measurementValuePoint,
+        textYDirection,
+        value,
+        unitsString
+        );
+    if (!measure)
+        HPDF_CheckError (page->error);
 
-	return measure;
+    return measure;
 }
 
 
 HPDF_EXPORT(HPDF_ExData)
 HPDF_Page_Create3DAnnotExData(HPDF_Page page)
 {
-	HPDF_PageAttr attr;
-	HPDF_Annotation exData;
+    HPDF_PageAttr attr;
+    HPDF_Annotation exData;
 
-	HPDF_PTRACE((" HPDF_Page_Create3DAnnotExData\n"));
+    HPDF_PTRACE((" HPDF_Page_Create3DAnnotExData\n"));
 
-	if (!HPDF_Page_Validate (page))
-		return NULL;
+    if (!HPDF_Page_Validate (page))
+        return NULL;
 
-	attr = (HPDF_PageAttr)page->attr;
+    attr = (HPDF_PageAttr)page->attr;
 
-	exData = HPDF_3DAnnotExData_New(page->mmgr, attr->xref);
-	if ( !exData)
-		HPDF_CheckError (page->error);
+    exData = HPDF_3DAnnotExData_New(page->mmgr, attr->xref);
+    if ( !exData)
+        HPDF_CheckError (page->error);
 
-	return exData;
+    return exData;
 }
 
 

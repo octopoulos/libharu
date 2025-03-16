@@ -48,9 +48,12 @@ LoadPngData  (HPDF_Dict     image,
 
 
 static void
-PngErrorFunc  (png_structp       png_ptr,
+PngErrorFunc  (png_structp  png_ptr,
                const char  *msg);
 
+static void
+PngWarnFunc  (png_structp  png_ptr,
+              const char  *msg);
 
 static HPDF_STATUS
 ReadPngData_Interlaced  (HPDF_Dict    image,
@@ -88,28 +91,12 @@ PngErrorFunc(png_structp png_ptr, const char* msg)
 }
 
 static void
-PngWarnFunc(png_structp png_ptr, const char* msg)
+PngWarnFunc  (png_structp  png_ptr,
+              const char  *msg)
 {
-	//char        error_number[16];
-	//HPDF_UINT   i;
-	//HPDF_STATUS detail_no;
-	//HPDF_Error  error;
-
-	///* pick out error-number from error message */
-	//HPDF_MemSet(error_number, 0, 16);
-
-	//for (i = 0; i < 15; i++)
-	//{
-	//	error_number[i] = *(msg + i);
-	//	if (*(msg + i + 1) == ' ')
-	//		break;
-	//}
-
-	//error     = (HPDF_Error)png_get_error_ptr(png_ptr);
-	//detail_no = (HPDF_STATUS)HPDF_AToI(error_number);
-	//// SET_ERROR(error, HPDF_LIBPNG_ERROR, detail_no);
-
-	//HPDF_SetError(error, HPDF_LIBPNG_ERROR, detail_no, msg, __LINE__);
+    // Warning does not prevent the job to be done
+    // So it can be safely ignored.
+    // printf("WARNING: %s\n", msg);
 }
 
 static HPDF_STATUS
@@ -117,7 +104,7 @@ ReadPngData_Interlaced  (HPDF_Dict    image,
                          png_structp  png_ptr,
                          png_infop    info_ptr)
 {
-    png_uint_32 len = png_get_rowbytes(png_ptr, info_ptr);
+    HPDF_UINT len = (HPDF_UINT) png_get_rowbytes(png_ptr, info_ptr);
     png_uint_32 height = png_get_image_height(png_ptr, info_ptr);
     png_bytep* row_pointers = HPDF_GetMem (image->mmgr,
                 height * sizeof (png_bytep));
@@ -160,7 +147,7 @@ ReadPngData  (HPDF_Dict    image,
               png_structp  png_ptr,
               png_infop    info_ptr)
 {
-    png_uint_32 len = png_get_rowbytes(png_ptr, info_ptr);
+    HPDF_UINT len = (HPDF_UINT) png_get_rowbytes(png_ptr, info_ptr);
     png_uint_32 height = png_get_image_height(png_ptr, info_ptr);
     png_bytep buf_ptr = HPDF_GetMem (image->mmgr, len);
 
@@ -198,9 +185,9 @@ ReadTransparentPaletteData  (HPDF_Dict    image,
 
 	row_ptr = HPDF_GetMem (image->mmgr, height * sizeof(png_bytep));
 	if (!row_ptr) {
-		return HPDF_FAILD_TO_ALLOC_MEM;
+		return HPDF_FAILED_TO_ALLOC_MEM;
 	} else {
-		png_uint_32 len = png_get_rowbytes(png_ptr, info_ptr);
+		HPDF_UINT len = (HPDF_UINT) png_get_rowbytes(png_ptr, info_ptr);
 
 		for (i = 0; i < (HPDF_UINT)height; i++) {
 			row_ptr[i] = HPDF_GetMem(image->mmgr, len);
@@ -209,7 +196,7 @@ ReadTransparentPaletteData  (HPDF_Dict    image,
 					HPDF_FreeMem (image->mmgr, row_ptr[i]);
 				}
 				HPDF_FreeMem (image->mmgr, row_ptr);
-				return HPDF_FAILD_TO_ALLOC_MEM;
+				return HPDF_FAILED_TO_ALLOC_MEM;
 			}
 		}
 	}
@@ -262,9 +249,9 @@ ReadTransparentPngData  (HPDF_Dict    image,
 
 	row_ptr = HPDF_GetMem (image->mmgr, height * sizeof(png_bytep));
 	if (!row_ptr) {
-		return HPDF_FAILD_TO_ALLOC_MEM;
+		return HPDF_FAILED_TO_ALLOC_MEM;
 	} else {
-		png_uint_32 len = png_get_rowbytes(png_ptr, info_ptr);
+		HPDF_UINT len = (HPDF_UINT) png_get_rowbytes(png_ptr, info_ptr);
 
 		for (i = 0; i < (HPDF_UINT)height; i++) {
 			row_ptr[i] = HPDF_GetMem(image->mmgr, len);
@@ -273,7 +260,7 @@ ReadTransparentPngData  (HPDF_Dict    image,
 					HPDF_FreeMem (image->mmgr, row_ptr[i]);
 				}
 				HPDF_FreeMem (image->mmgr, row_ptr);
-				return HPDF_FAILD_TO_ALLOC_MEM;
+				return HPDF_FAILED_TO_ALLOC_MEM;
 			}
 		}
 	}
@@ -338,7 +325,7 @@ CreatePallet (HPDF_Dict    image,
     png_color *src_pl = NULL;
     HPDF_BYTE *ppallet;
     HPDF_BYTE *p;
-    HPDF_UINT i;
+    HPDF_INT i;
     HPDF_Array array;
 
     /* png_get_PLTE does not call PngErrorFunc even if it failed.
@@ -487,7 +474,7 @@ LoadPngData  (HPDF_Dict     image,
 
 		smask = HPDF_DictStream_New (image->mmgr, xref);
 		if (!smask) {
-			ret = HPDF_FAILD_TO_ALLOC_MEM;
+			ret = HPDF_FAILED_TO_ALLOC_MEM;
 			goto Exit;
 		}
 
@@ -508,7 +495,7 @@ LoadPngData  (HPDF_Dict     image,
 		smask_data = HPDF_GetMem(image->mmgr, width * height);
 		if (!smask_data) {
 			HPDF_Dict_Free(smask);
-			ret = HPDF_FAILD_TO_ALLOC_MEM;
+			ret = HPDF_FAILED_TO_ALLOC_MEM;
 			goto Exit;
 		}
 
@@ -548,7 +535,7 @@ no_transparent_color_in_palette:
 
 		smask = HPDF_DictStream_New (image->mmgr, xref);
 		if (!smask) {
-			ret = HPDF_FAILD_TO_ALLOC_MEM;
+			ret = HPDF_FAILED_TO_ALLOC_MEM;
 			goto Exit;
 		}
 
@@ -571,7 +558,7 @@ no_transparent_color_in_palette:
 		smask_data = HPDF_GetMem(image->mmgr, width * height);
 		if (!smask_data) {
 			HPDF_Dict_Free(smask);
-			ret = HPDF_FAILD_TO_ALLOC_MEM;
+			ret = HPDF_FAILED_TO_ALLOC_MEM;
 			goto Exit;
 		}
 

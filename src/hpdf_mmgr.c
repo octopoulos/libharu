@@ -245,5 +245,3 @@ InternalFreeMem  (void*  aptr)
 {
     HPDF_FREE (aptr);
 }
-
-
